@@ -1,0 +1,203 @@
+/* Fox Den Seoul palette */
+
+@define-color fox-orange #ff681f;
+@define-color neon-cyan #25d9ff;
+@define-color neon-pink #ff2fb3;
+@define-color panel rgba(7, 11, 18, 0.90);
+@define-color panel-hover rgba(17, 24, 35, 0.94);
+@define-color text #edf7ff;
+@define-color muted #8291a5;
+@define-color warning #ffd166;
+@define-color danger #ff5f6d;
+@define-color success #7ee787;
+
+* {
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    font-family: "Monaspace Radon NF", "Noto Sans", "Noto Color Emoji";
+    font-size: 14px;
+}
+
+window#waybar {
+    background: transparent;
+    color: @text;
+}
+
+/* Three primary Fox Den pills. */
+.modules-left,
+.modules-center,
+.modules-right {
+    background: @panel;
+    border: 1px solid;
+    border-radius: 14px;
+    margin: 4px 6px;
+    padding: 0 8px;
+}
+
+.modules-left {
+    border-color: @fox-orange;
+    box-shadow: 0 0 6px @fox-orange;
+}
+
+.modules-center {
+    border-color: @neon-cyan;
+    box-shadow: 0 0 6px @neon-cyan;
+}
+
+.modules-right {
+    border-color: @neon-pink;
+    box-shadow: 0 0 6px @neon-pink;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Common module spacing. */
+#custom-foxden,
+#workspaces,
+#window,
+#clock,
+#network,
+#custom-network-sparkline,
+#cpu,
+#memory,
+#battery,
+#custom-controls,
+#tray {
+    color: @text;
+    background: transparent;
+    margin: 0;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+/* Group wrappers stay visually transparent inside their outer pill. */
+#local-time,
+#seoul-time,
+#connectivity,
+#system,
+#actions {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+/* Orange separators: Fox Den | workspaces | active window. */
+#workspaces,
+#window {
+    border-left: 1px solid @fox-orange;
+    margin-left: 6px;
+    padding-left: 8px;
+}
+
+/* Cyan separator: Pennsylvania | Seoul. */
+#seoul-time {
+    border-left: 1px solid @neon-cyan;
+    margin-left: 7px;
+    padding-left: 8px;
+}
+
+/* Pink separators: connectivity | hardware | controls/tray. */
+#system,
+#actions {
+    border-left: 1px solid @neon-pink;
+    margin-left: 7px;
+    padding-left: 8px;
+}
+
+#custom-foxden {
+    color: @fox-orange;
+    font-weight: bold;
+    padding-left: 7px;
+    padding-right: 5px;
+}
+
+#window {
+    color: @muted;
+}
+
+#clock {
+    color: @neon-cyan;
+    font-weight: bold;
+}
+
+#network {
+    padding-left: 5px;
+}
+
+#custom-network-sparkline {
+    color: @text;
+    font-size: 10px;
+    min-width: 0;
+    padding-left: 2px;
+    padding-right: 5px;
+}
+
+#custom-network-sparkline.offline,
+#custom-network-sparkline.error,
+#network.disconnected,
+#network.disabled {
+    color: @danger;
+}
+
+#system #cpu,
+#system #memory,
+#system #battery {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#battery.warning {
+    color: @warning;
+}
+
+#battery.critical {
+    color: @danger;
+    font-weight: bold;
+}
+
+/* Monochrome Nerd Font sliders icon: fully controlled by CSS. */
+#custom-controls {
+    color: @neon-pink;
+    font-family: "Monaspace Radon NF", "JetBrainsMono Nerd Font Mono";
+    font-size: 15px;
+    font-weight: bold;
+    min-width: 0;
+    padding-left: 4px;
+    padding-right: 5px;
+}
+
+#custom-controls:hover {
+    color: @neon-cyan;
+    background: @panel-hover;
+    border-radius: 8px;
+}
+
+#tray {
+    padding-left: 3px;
+    padding-right: 4px;
+}
+
+/* Shared hover treatment without changing module geometry. */
+#network:hover,
+#cpu:hover,
+#memory:hover,
+#battery:hover,
+#clock:hover,
+#custom-foxden:hover,
+#window:hover {
+    background: @panel-hover;
+    border-radius: 8px;
+}
+
+/* Tooltips and calendars. */
+tooltip {
+    background: rgba(7, 11, 18, 0.97);
+    border: 1px solid rgba(37, 217, 255, 0.70);
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: @text;
+    padding: 7px 9px;
+}

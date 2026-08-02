@@ -1,0 +1,212 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 40,
+    "margin-top": 10,
+    "margin-left": 14,
+    "margin-right": 14,
+    "spacing": 2,
+    "fixed-center": true,
+    "reload_style_on_change": true,
+
+    "modules-left": [
+        "custom/foxden",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+
+    "modules-center": [
+        "group/local-time",
+        "group/seoul-time"
+    ],
+
+    "modules-right": [
+        "group/connectivity",
+        "group/system",
+        "group/actions"
+    ],
+
+    "custom/foxden": {
+        "format": "Fox Den",
+        "tooltip": false
+    },
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "sort-by": "number",
+        "show-special": true
+    },
+
+    "hyprland/window": {
+        "format": "{title}",
+        "max-length": 28,
+        "separate-outputs": true
+    },
+
+    "clock#local": {
+        "timezone": "America/New_York",
+        "format": "\uD83C\uDDFA\uD83C\uDDF8 \u00B7 PA {:%H:%M}",
+        "tooltip-format": "<b>Carlisle, Pennsylvania</b>\n{:%A, %B %d, %Y\n%H:%M %Z \u00B7 ISO Week %V \u00B7 Day %j}\n\n<tt><span size='145%'>{calendar}</span></tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "iso8601": true,
+            "format": {
+                "months": "<span color='#25d9ff'><b>{}</b></span>",
+                "days": "<span color='#edf7ff'>{}</span>",
+                "weeks": "<span color='#8291a5'><b>W{}</b></span>",
+                "weekdays": "<span color='#ff681f'><b>{}</b></span>",
+                "today": "<span color='#df55ff'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "clock#seoul": {
+        "timezone": "Asia/Seoul",
+        "format": "\uD83C\uDDF0\uD83C\uDDF7 \u00B7 서울 {:%H:%M}",
+        "tooltip-format": "<b>서울, 대한민국</b>\n{:%Y년 %m월 %d일\n%H:%M %Z \u00B7 ISO 주차 %V \u00B7 일 %j}\n\n<tt><span size='135%'>{calendar}</span></tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "iso8601": true,
+            "format": {
+                "months": "<span color='#25d9ff'><b>{}</b></span>",
+                "days": "<span color='#edf7ff'>{}</span>",
+                "weeks": "<span color='#8291a5'><b>W{}</b></span>",
+                "weekdays": "<span color='#ff681f'><b>{}</b></span>",
+                "today": "<span color='#df55ff'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "network": {
+        "interval": 2,
+        "format-wifi": "Wi-Fi",
+        "format-ethernet": "LAN",
+        "format-linked": "Linked",
+        "format-disconnected": "Offline",
+        "tooltip": true,
+        "tooltip-format-wifi": "<b>{essid}</b>\nInterface: {ifname}\nIPv4: {ipaddr}/{cidr}\nGateway: {gwaddr}\nSignal: {signalStrength}% ({signaldBm} dBm)\nFrequency: {frequency} GHz",
+        "tooltip-format-ethernet": "<b>Ethernet</b>\nInterface: {ifname}\nIPv4: {ipaddr}/{cidr}\nGateway: {gwaddr}",
+        "tooltip-format-linked": "Interface {ifname} is linked but has no IP address",
+        "tooltip-format-disconnected": "No active network connection"
+    },
+
+    "custom/network-sparkline": {
+        "exec": "$HOME/.config/waybar/scripts/network-sparkline.py",
+        "return-type": "json",
+        "format": "{text}",
+        "tooltip": true,
+        "restart-interval": 5
+    },
+
+    "wireplumber": {
+        "format": "Volume {volume}%",
+        "format-muted": "Volume Muted",
+        "tooltip-format": "{node_name}",
+        "scroll-step": 2,
+        "max-volume": 100,
+        "on-click": "pavucontrol",
+        "on-right-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+
+    "backlight": {
+        "format": "Brightness {percent}%"
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "CPU {usage}%",
+        "tooltip": true
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "RAM {percentage}%",
+        "tooltip-format": "Used: {used:0.1f} GiB\nAvailable: {avail:0.1f} GiB"
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip": true,
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "format-icons": {
+            "performance": "P",
+            "balanced": "B",
+            "power-saver": "S",
+            "default": "?"
+        }
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "Bat {capacity}%",
+        "format-charging": "Chrg {capacity}%",
+        "format-plugged": "AC {capacity}%",
+        "tooltip-format": "{timeTo} at {power} W"
+    },
+
+    "tray": {
+        "icon-size": 13,
+        "spacing": 4
+    },
+
+    "custom/controls": {
+        "format": "\uf1de",
+        "tooltip": true,
+        "tooltip-format": "Quick controls",
+        "on-click": "bash $HOME/.config/waybar/scripts/quick-controls.sh"
+    },
+
+    "group/local-time": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock#local"
+        ]
+    },
+
+    "group/seoul-time": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock#seoul"
+        ]
+    },
+
+    "group/connectivity": {
+        "orientation": "horizontal",
+        "modules": [
+            "network",
+            "custom/network-sparkline"
+        ]
+    },
+
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": [
+            "cpu",
+            "memory",
+            "battery"
+        ]
+    },
+
+    "group/actions": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/controls",
+            "tray"
+        ]
+    }
+}

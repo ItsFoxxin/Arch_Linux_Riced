@@ -1,0 +1,84 @@
+/* Fox Den quick-controls popup */
+
+* {
+    background: #070b12f7;
+    background-alt: #111823f2;
+    foreground: #edf7ff;
+    muted: #8291a5;
+    orange: #ff681f;
+    cyan: #25d9ff;
+    pink: #ff2fb3;
+
+    font: "Monaspace Radon NF 13";
+}
+
+window {
+    location: north east;
+    anchor: north east;
+    x-offset: -14px;
+    y-offset: 56px;
+    width: 390px;
+
+    background-color: @background;
+    border: 2px;
+    border-color: @pink;
+    border-radius: 14px;
+}
+
+mainbox {
+    background-color: transparent;
+    spacing: 10px;
+    padding: 12px;
+}
+
+inputbar {
+    background-color: @background-alt;
+    border: 1px;
+    border-color: @cyan;
+    border-radius: 9px;
+    padding: 9px 11px;
+    spacing: 8px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    background-color: transparent;
+    text-color: @orange;
+    font: "Monaspace Radon NF Bold 13";
+}
+
+entry {
+    background-color: transparent;
+    text-color: @foreground;
+    placeholder: "Filter controls";
+    placeholder-color: @muted;
+}
+
+listview {
+    background-color: transparent;
+    columns: 1;
+    lines: 7;
+    fixed-height: false;
+    spacing: 5px;
+    scrollbar: false;
+}
+
+element {
+    background-color: transparent;
+    text-color: @foreground;
+    border: 1px;
+    border-color: transparent;
+    border-radius: 8px;
+    padding: 9px 11px;
+}
+
+element selected.normal {
+    background-color: @background-alt;
+    border-color: @cyan;
+    text-color: @pink;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+}
