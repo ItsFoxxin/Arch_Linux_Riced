@@ -62,6 +62,7 @@ window#waybar {
 #cpu,
 #memory,
 #battery,
+#custom-input-method,
 #custom-controls,
 #tray {
     color: @text;
@@ -76,6 +77,7 @@ window#waybar {
 #seoul-time,
 #connectivity,
 #system,
+#custom-input-method,
 #actions {
     background: transparent;
     margin: 0;
@@ -156,15 +158,32 @@ window#waybar {
     font-weight: bold;
 }
 
+#custom-input-method {
+	font-family: "Noto Color Emoji", "Monaspace Radon NF";
+	font-size: 11px;
+	
+	min-width: 18px;
+	margin: 0;
+	padding: 1px 5px 0 5px;
+
+	background: transparent;
+}
+
+#custom-input-method.unknown {
+	color: @warning;
+}
+
 /* Monochrome Nerd Font sliders icon: fully controlled by CSS. */
 #custom-controls {
     color: @neon-pink;
     font-family: "Monaspace Radon NF", "JetBrainsMono Nerd Font Mono";
-    font-size: 15px;
+    font-size: 17px;
     font-weight: bold;
-    min-width: 0;
-    padding-left: 4px;
-    padding-right: 5px;
+    min-width: 20px;
+    border-left: 1px solid @neon-pink;
+    margin-left: 5px;
+    padding-left: 5px;
+    padding-right: 8px;
 }
 
 #custom-controls:hover {
@@ -174,8 +193,9 @@ window#waybar {
 }
 
 #tray {
-    padding-left: 3px;
-    padding-right: 4px;
+    margin-left: 2px;
+    padding-left: 5px;
+    padding-right: 9px;
 }
 
 /* Shared hover treatment without changing module geometry. */
@@ -185,7 +205,8 @@ window#waybar {
 #battery:hover,
 #clock:hover,
 #custom-foxden:hover,
-#window:hover {
+#window:hover
+#custom-input-method:hover{
     background: @panel-hover;
     border-radius: 8px;
 }
