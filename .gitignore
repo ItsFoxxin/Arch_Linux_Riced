@@ -36,3 +36,10 @@
 
 .DS_Store
 Thumbs.db
+
+**/*.baseline
+**/*.baseline.*
+**/*-baseline
+**/*-baseline.*
+**/*.back
+**/*.pre-stow-*
