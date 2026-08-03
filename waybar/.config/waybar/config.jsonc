@@ -28,7 +28,8 @@
 
     "custom/foxden": {
         "format": "Fox Den",
-        "tooltip": false
+        "tooltip": false,
+	"on-click": "$HOME/.config/waybar/scripts/foxden-launcher.sh"
     },
 
     "hyprland/workspaces": {

@@ -1,0 +1,92 @@
+/* Fox Den Launcher */
+
+window {
+	location: north west;
+	anchor: north west;
+
+	x-offset: 12px;
+	y-offset: 44px;
+	width: 360px;
+
+	background-color: #0b0e17f2;
+
+	border: 2px;
+	border-color: #ff6a00;
+	border-radius: 12px;
+}
+
+mainbox {
+	background-color: #0b0e17f2;
+
+	padding: 10px;
+	spacing: 8px;
+
+	childer: [ inputbar, listview ];
+}
+
+inputbar {
+	background-color: #151a29;
+
+	padding: 7px 9px;
+	spacing: 8px;
+
+	border: 0px 0px 1px 0px;
+	border-color: #ff6a00;
+	border-radius: 8px;
+}
+
+prompt {
+	background-color: transparent;
+	text-color: #ff8a26;
+	font: "Monaspace Radon NF Bold 13";
+}
+
+entry {
+	background-color: transparent;
+	text-color: #f4f4f5;
+
+	placeholder: "Search the den...";
+	placeholder-color: #7f8799;
+}
+
+listview {
+	background-color: #0b0e17f2;
+
+	lines: 6;
+	spacing: 4px;
+
+	scrollbar: false;
+	dynamic: true;
+}
+
+element {
+	background-color: transparent;
+	text-color: #f4f4f5;
+
+	padding: 8px 10px;
+
+	border: 1px;
+	border-color: transparent;
+	border-radius: 8px;
+}
+
+element selected {
+	background-color: #ff6a0026;
+	text-color: #25d9ff;
+
+	border: 1px;
+	border-color: #25d9ff;
+}
+
+element-text {
+	background-color: transparent;
+	text-color: inherit;
+}
+
+element-text selected {
+	text-color: #25d9ff;
+}
+
+element-icon {
+	background-color: transparent;
+}
