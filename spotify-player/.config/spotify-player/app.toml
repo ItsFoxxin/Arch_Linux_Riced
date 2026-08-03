@@ -1,0 +1,36 @@
+theme = "fox_den"
+
+enable_streaming = "Never"
+enable_media_control = false
+
+border_type = "Rounded"
+progress_bar_type = "Line"
+progress_bar_position = "Bottom"
+
+play_icon = "\u25B6"
+pause_icon = "\u23F8"
+liked_icon = "\u2665"
+explicit_icon = "E"
+
+playback_format = "{status} \U0001F3B5 {track}\n\U0001F3A4 {artists} \u2022 \U0001F4BF {album}\n\u2728 {metadata}"
+playback_metadata_fields = ["repeat", "shuffle", "volume", "device"]
+
+enable_notify = true
+notify_format = { summary = "\U0001F98A Fox Den \u2022 Now Playing:", body = "\U0001F3B5 {track}\n\U0001F3A4 {artists} \u2022 \U0001F4BF {album}" }
+notify_timeout_in_secs = 5
+notify_transient = true
+notify_streaming_only = false
+
+[device]
+name = "com-admin-fox"
+device_type = "computer"
+volume = 70
+bitrate = 320
+audio_cache = false
+normalization = false
+autoplay = false
+
+[layout]
+library = { album_percent = 40, playlist_percent = 40 }
+playback_window_position = "Top"
+playback_window_height = 6

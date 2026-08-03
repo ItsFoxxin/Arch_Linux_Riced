@@ -1,0 +1,50 @@
+[[themes]]
+name = "fox_den"
+
+[themes.palette]
+background = "#070910"
+foreground = "#f4f7ff"
+
+black = "#11141d"
+red = "#ff4d6d"
+green = "#25ff88"
+yellow = "#ffd166"
+blue = "#4c7dff"
+magenta = "#ff3ec8"
+cyan = "#00d9ff"
+white = "#cfd8ec"
+
+bright_black = "#657184"
+bright_red = "#ff6b35"
+bright_green = "#5cff9d"
+bright_yellow = "#ffe28a"
+bright_blue = "#78a1ff"
+bright_magenta = "#ff78df"
+bright_cyan = "#72f1ff"
+bright_white = "#ffffff"
+
+[themes.component_style]
+block_title = { fg = "#00d9ff", modifiers = ["Bold"] }
+border = { fg = "#ff6b35" }
+
+playback_status = { fg = "#25ff88", modifiers = ["Bold"] }
+playback_track = { fg = "#f4f7ff", modifiers = ["Bold"] }
+playback_artists = { fg = "#00d9ff" }
+playback_album = { fg = "#ff3ec8" }
+playback_genres = { fg = "#657184", modifiers = ["Italic"] }
+playback_metadata = { fg = "#657184" }
+
+playback_progress_bar = { fg = "#ff6b35" }
+playback_progress_bar_unfilled = { fg = "#303644" }
+
+current_playing = { fg = "#25ff88", modifiers = ["Bold"] }
+page_desc = { fg = "#00d9ff", modifiers = ["Bold"] }
+playlist_desc = { fg = "#657184" }
+table_header = { fg = "#ff3ec8", modifiers = ["Bold"] }
+
+selection = { fg = "#070910", bg = "#00d9ff", modifiers = ["Bold"] }
+secondary_row = { fg = "#aab4c3" }
+like = { fg = "#ff3ec8", modifiers = ["Bold"] }
+
+lyrics_played = { fg = "#657184" }
+lyrics_playing = { fg = "#00d9ff", modifiers = ["Bold"] }
