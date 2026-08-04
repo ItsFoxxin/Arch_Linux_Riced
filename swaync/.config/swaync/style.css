@@ -1,0 +1,540 @@
+/* =========================================================
+ * Fox Den Core — SwayNC 0.12.6
+ * Full replacement theme
+ * ========================================================= */
+
+:root {
+  --fox-bg: #070910;
+  --fox-panel: rgba(7, 9, 16, 0.97);
+  --fox-surface: rgba(13, 18, 30, 0.97);
+  --fox-surface-hover: rgba(23, 31, 48, 0.99);
+  --fox-surface-focus: rgba(0, 217, 255, 0.12);
+
+  --fox-orange: #ff6b35;
+  --fox-cyan: #00d9ff;
+  --fox-magenta: #ff3ec8;
+  --fox-green: #25ff88;
+  --fox-yellow: #ffd166;
+  --fox-critical: #ff4d6d;
+
+  --fox-text: #f4f7ff;
+  --fox-muted: #8fa0b5;
+  --fox-disabled: #657184;
+
+  --notification-icon-size: 58px;
+  --notification-app-icon-size: 20px;
+  --notification-group-icon-size: 30px;
+
+  --fox-radius: 14px;
+  --fox-border: 2px solid var(--fox-orange);
+  --fox-border-soft: 1px solid rgba(255, 107, 53, 0.45);
+
+  --fox-shadow:
+    0 0 0 1px rgba(255, 107, 53, 0.20),
+    0 0 14px rgba(255, 107, 53, 0.24);
+
+  --font-size-body: 15px;
+  --font-size-summary: 16px;
+  --hover-transition: background 150ms ease-in-out,
+                      border-color 150ms ease-in-out,
+                      color 150ms ease-in-out;
+  --group-collapse-transition: opacity 200ms ease-in-out;
+}
+
+notificationwindow,
+blankwindow,
+.blank-window,
+.floating-notifications {
+  background: transparent;
+}
+
+/* =========================================================
+ * Floating notifications and notification cards
+ * ========================================================= */
+
+.notification-row {
+  background: transparent;
+  outline: none;
+}
+
+.notification-row:focus {
+  background: var(--fox-surface-focus);
+  border-radius: var(--fox-radius);
+}
+
+.notification-row .notification-background {
+  padding: 7px 12px;
+}
+
+.notification-row .notification-background .notification {
+  background: var(--fox-surface);
+  color: var(--fox-text);
+  border: var(--fox-border);
+  border-radius: var(--fox-radius);
+  box-shadow: var(--fox-shadow);
+  padding: 0;
+  transition: var(--hover-transition);
+}
+
+.notification-row .notification-background .notification.low {
+  border-color: var(--fox-orange);
+  box-shadow: var(--fox-shadow);
+}
+
+.notification-row .notification-background .notification.critical {
+  border-color: var(--fox-critical);
+  box-shadow:
+    0 0 0 1px rgba(255, 77, 109, 0.22),
+    0 0 16px rgba(255, 77, 109, 0.30);
+}
+
+.notification-row
+.notification-background
+.notification
+.notification-default-action {
+  background: transparent;
+  color: var(--fox-text);
+  border: none;
+  border-radius: var(--fox-radius);
+  box-shadow: none;
+  margin: 0;
+  padding: 8px;
+  transition: var(--hover-transition);
+}
+
+.notification-row
+.notification-background
+.notification
+.notification-default-action:hover {
+  background: var(--fox-surface-hover);
+}
+
+.notification-row
+.notification-background
+.notification
+.notification-default-action:not(:only-child) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.notification-content {
+  background: transparent;
+  border-radius: var(--fox-radius);
+  padding: 0;
+}
+
+.notification-content .image {
+  -gtk-icon-filter: none;
+  -gtk-icon-size: var(--notification-icon-size);
+  border-radius: 10px;
+  margin: 5px 8px 5px 4px;
+}
+
+.notification-content .app-icon {
+  -gtk-icon-filter: none;
+  -gtk-icon-size: var(--notification-app-icon-size);
+  -gtk-icon-shadow: 0 1px 4px #000000;
+  margin: 6px;
+}
+
+.notification-content .text-box label {
+  filter: none;
+}
+
+.notification-content .text-box .summary {
+  color: var(--fox-cyan);
+  background: transparent;
+  font-size: var(--font-size-summary);
+  font-weight: bold;
+  text-shadow: none;
+}
+
+.notification-content .text-box .time {
+  color: var(--fox-magenta);
+  background: transparent;
+  font-size: 13px;
+  font-weight: bold;
+  margin-right: 30px;
+  text-shadow: none;
+}
+
+.notification-content .text-box .body {
+  color: var(--fox-text);
+  background: transparent;
+  font-size: var(--font-size-body);
+  font-weight: normal;
+  text-shadow: none;
+}
+
+.notification-content progressbar {
+  margin-top: 6px;
+}
+
+.notification-content progressbar trough {
+  background: rgba(152, 166, 184, 0.22);
+  border-radius: 999px;
+  min-height: 5px;
+}
+
+.notification-content progressbar progress {
+  background: var(--fox-cyan);
+  border-radius: 999px;
+  min-height: 5px;
+}
+
+.notification-content .body-image {
+  background-color: transparent;
+  border-radius: 10px;
+  margin-top: 6px;
+  -gtk-icon-filter: none;
+}
+
+/* =========================================================
+ * Close and action buttons
+ * ========================================================= */
+
+.close-button {
+  background: rgba(255, 62, 200, 0.10);
+  color: var(--fox-magenta);
+  border: 1px solid rgba(255, 62, 200, 0.38);
+  border-radius: 100%;
+  box-shadow: none;
+  margin-top: 8px;
+  margin-right: 8px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+}
+
+.close-button:hover {
+  background: var(--fox-magenta);
+  color: var(--fox-bg);
+  border-color: var(--fox-magenta);
+  box-shadow: none;
+}
+
+.notification-alt-actions {
+  background: transparent;
+  border-bottom-left-radius: var(--fox-radius);
+  border-bottom-right-radius: var(--fox-radius);
+  padding: 4px 6px 7px;
+}
+
+.notification-action {
+  margin: 4px;
+  padding: 0;
+}
+
+.notification-action > button {
+  background: rgba(0, 217, 255, 0.10);
+  color: var(--fox-cyan);
+  border: 1px solid rgba(0, 217, 255, 0.40);
+  border-radius: 10px;
+}
+
+.notification-action > button:hover {
+  background: rgba(0, 217, 255, 0.22);
+  border-color: var(--fox-cyan);
+}
+
+/* =========================================================
+ * Inline reply support
+ * ========================================================= */
+
+.inline-reply {
+  margin-top: 6px;
+}
+
+.inline-reply-entry {
+  background: var(--fox-bg);
+  color: var(--fox-text);
+  caret-color: var(--fox-cyan);
+  border: 1px solid rgba(0, 217, 255, 0.45);
+  border-radius: 10px;
+}
+
+.inline-reply-button {
+  background: rgba(255, 107, 53, 0.14);
+  color: var(--fox-orange);
+  border: 1px solid rgba(255, 107, 53, 0.50);
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+.inline-reply-button:hover {
+  background: rgba(255, 107, 53, 0.28);
+}
+
+.inline-reply-button:disabled {
+  background: transparent;
+  color: var(--fox-disabled);
+  border-color: rgba(101, 113, 132, 0.35);
+}
+
+/* =========================================================
+ * Notification grouping
+ * ========================================================= */
+
+.notification-group {
+  transition: var(--group-collapse-transition);
+}
+
+.notification-group:focus {
+  background: var(--fox-surface-focus);
+  border-radius: var(--fox-radius);
+}
+
+.notification-group .notification-group-close-button .close-button {
+  margin: 12px 20px;
+}
+
+.notification-group .notification-group-buttons,
+.notification-group .notification-group-headers {
+  color: var(--fox-text);
+  margin: 0 16px;
+}
+
+.notification-group .notification-group-headers .notification-group-icon {
+  color: var(--fox-orange);
+  -gtk-icon-size: var(--notification-group-icon-size);
+}
+
+.notification-group .notification-group-headers .notification-group-header {
+  color: var(--fox-cyan);
+  font-weight: bold;
+}
+
+.notification-group.collapsed.not-expanded {
+  opacity: 0.45;
+}
+
+.notification-group.collapsed .notification-row .notification {
+  background: var(--fox-surface);
+}
+
+.notification-group.collapsed
+.notification-row:not(:last-child)
+.notification-action,
+.notification-group.collapsed
+.notification-row:not(:last-child)
+.notification-default-action {
+  opacity: 0;
+}
+
+/* =========================================================
+ * Control center shell
+ * ========================================================= */
+
+.control-center {
+  background: var(--fox-panel);
+  color: var(--fox-text);
+  border: var(--fox-border);
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 1px rgba(255, 107, 53, 0.18),
+    0 0 20px rgba(0, 217, 255, 0.16);
+}
+
+.control-center .control-center-list-placeholder {
+  color: var(--fox-muted);
+  opacity: 1;
+}
+
+.control-center .control-center-list {
+  background: transparent;
+}
+
+.control-center
+.control-center-list
+.notification
+.notification-default-action,
+.control-center
+.control-center-list
+.notification
+.notification-action {
+  transition: var(--group-collapse-transition),
+              var(--hover-transition);
+}
+
+/* =========================================================
+ * Shared widget styling
+ * ========================================================= */
+
+.widget {
+  background: rgba(17, 23, 37, 0.80);
+  color: var(--fox-text);
+  border: var(--fox-border-soft);
+  border-radius: var(--fox-radius);
+  margin: 8px;
+  padding: 10px;
+}
+
+/* Title */
+.widget-title > label {
+  color: var(--fox-cyan);
+  font-size: 1.35rem;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.widget-title > button,
+.widget-inhibitors > button {
+  background: rgba(255, 107, 53, 0.14);
+  color: var(--fox-orange);
+  border: 1px solid rgba(255, 107, 53, 0.50);
+  border-radius: 10px;
+  margin-left: 8px;
+}
+
+.widget-title > button:hover,
+.widget-inhibitors > button:hover {
+  background: var(--fox-orange);
+  color: var(--fox-bg);
+}
+
+/* Do Not Disturb */
+.widget-dnd label {
+  color: var(--fox-text);
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.widget-dnd switch {
+  background: var(--fox-bg);
+  border: 1px solid var(--fox-muted);
+  border-radius: 999px;
+  margin-left: 8px;
+}
+
+.widget-dnd switch:checked {
+  background: var(--fox-green);
+  border-color: var(--fox-green);
+}
+
+.widget-dnd switch slider {
+  background: var(--fox-text);
+  border-radius: 999px;
+}
+
+/* =========================================================
+ * MPRIS / Spotify media widget
+ * ========================================================= */
+
+:root {
+  --mpris-album-art-overlay: rgba(7, 9, 16, 0.72);
+  --mpris-button-hover: rgba(0, 217, 255, 0.18);
+  --mpris-album-art-icon-size: 92px;
+  --mpris-album-art-shadow: 0 0 12px rgba(0, 217, 255, 0.18);
+}
+
+.widget-mpris {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.widget-mpris .widget-mpris-player {
+  border: var(--fox-border-soft);
+  border-radius: var(--fox-radius);
+  box-shadow: var(--mpris-album-art-shadow);
+  margin: 8px;
+}
+
+.widget-mpris .widget-mpris-player .mpris-background {
+  filter: blur(10px);
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay {
+  background-color: var(--mpris-album-art-overlay);
+  border-radius: var(--fox-radius);
+  padding: 14px;
+}
+
+.widget-mpris
+.widget-mpris-player
+.mpris-overlay
+.widget-mpris-album-art {
+  -gtk-icon-size: var(--mpris-album-art-icon-size);
+  border-radius: 10px;
+  box-shadow: var(--mpris-album-art-shadow);
+}
+
+.widget-mpris
+.widget-mpris-player
+.mpris-overlay
+.widget-mpris-title {
+  color: var(--fox-cyan);
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.widget-mpris
+.widget-mpris-player
+.mpris-overlay
+.widget-mpris-subtitle {
+  color: var(--fox-text);
+  font-size: 1rem;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay button {
+  background: transparent;
+  color: var(--fox-orange);
+  border-radius: 999px;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay button:hover {
+  background: var(--mpris-button-hover);
+  color: var(--fox-cyan);
+}
+
+/* =========================================================
+ * Optional widgets retained for future use
+ * ========================================================= */
+
+.widget-label > label,
+.widget-inhibitors > label {
+  color: var(--fox-cyan);
+  font-size: 1.1rem;
+}
+
+.widget-buttons-grid flowboxchild > button {
+  background: var(--fox-surface);
+  color: var(--fox-text);
+  border: var(--fox-border-soft);
+  border-radius: 10px;
+}
+
+.widget-buttons-grid flowboxchild > button:hover {
+  background: var(--fox-surface-hover);
+}
+
+.widget-buttons-grid flowboxchild > button.toggle:checked {
+  background: var(--fox-orange);
+  color: var(--fox-bg);
+  border-color: var(--fox-orange);
+}
+
+.widget-volume row image {
+  -gtk-icon-size: 24px;
+}
+
+.widget-slider label {
+  color: var(--fox-text);
+}
+
+scale trough {
+  background: rgba(152, 166, 184, 0.22);
+  border-radius: 999px;
+  min-height: 6px;
+}
+
+scale highlight {
+  background: var(--fox-cyan);
+  border-radius: 999px;
+}
+
+scale slider {
+  background: var(--fox-orange);
+  border-radius: 999px;
+}

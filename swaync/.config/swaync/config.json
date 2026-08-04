@@ -1,0 +1,62 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "ignore-gtk-theme": true,
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "layer-shell-cover-screen": true,
+  "cssPriority": "user",
+  "control-center-margin-top": 56,
+  "control-center-margin-bottom": 12,
+  "control-center-margin-right": 12,
+  "control-center-margin-left": 12,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-body-image-height": 100,
+  "notification-body-image-width": 200,
+  "timeout": 7,
+  "timeout-low": 4,
+  "timeout-critical": 0,
+  "fit-to-screen": true,
+  "relative-timestamps": true,
+  "control-center-width": 440,
+  "control-center-height": 700,
+  "notification-window-width": 430,
+  "keyboard-shortcuts": true,
+  "notification-grouping": true,
+  "image-visibility": "when-available",
+  "transition-time": 180,
+  "hide-on-clear": true,
+  "hide-on-action": true,
+  "text-empty": "\U0001F98A The den is quiet",
+  "script-fail-notify": true,
+  "scripts": {},
+  "notification-visibility": {},
+  "widgets": [
+    "title",
+    "dnd",
+    "mpris",
+    "notifications"
+  ],
+  "widget-config": {
+    "notifications": {
+      "vexpand": true
+    },
+    "title": {
+      "text": "Fox Den Notifications",
+      "clear-all-button": true,
+      "button-text": "Clear Den"
+    },
+    "dnd": {
+      "text": "Quiet Mode"
+    },
+    "mpris": {
+      "blacklist": [],
+      "autohide": true,
+      "show-album-art": "always",
+      "loop-carousel": false
+    }
+  }
+}
