@@ -28,7 +28,32 @@ confirm_action() {
 			"$action"
 	)"
 
-	[[ "answer" == "$action" ]]
+	[[ "$answer" == "$action" ]]
+}
+
+notify_power_action() {
+	local message="$1"
+
+	if command -v notify-send >/dev/null 2>&1; then
+		notify-send \
+			--app-name="Fox Den" \
+			--urgency=critical \
+			--expire-time=5000 \
+			"Power & Sessions" \
+			"$message"
+	fi
+}
+
+run_power_command() {
+	local action="$1"
+	shift
+
+	logger --tag foxden-launcher \
+		"Power action confirmed: $action; command: $*"
+
+	notify_power_action "$action starting now"
+
+	"$@"
 }
 
 power_menu() {
@@ -39,38 +64,38 @@ power_menu() {
 			"Power & Session" \
 			"Lock" \
 			"Suspend" \
-			"Log out" \
 			"Restart" \
 			"Shut down"
 	)"
 
 	case "$choice" in
 		"Lock")
+			confirm_action "Lock" || return 0
+			
+			notify_power_action "Locking session"
+			
 			if command -v hyprlock >/dev/null 2>&1; then
-				hyprlock
+				hyprlock >/dev/null 2>&1 &
+
 			else
 				loginctl lock-session
+
 			fi
 			;;
 
 		"Suspend")
-			confirm_action "Suspend" &&
-				systemctl suspend
-			;;
-
-		"Log out")
-			confirm_action "Log out" &&
-				hyprctl dispatch exit
+			confirm_action "Suspend" || return 0
+			run_power_command "Suspend" systemctl suspend
 			;;
 
 		"Restart")
-			confirm_action "Restart" &&
-				systemctl reboot
+			confirm_action "Restart" || return 0
+			run_power_command "Restart" systemctl reboot
 			;;
 
 		"Shut down")
-			confirm_action "Shut down" &&
-				systemctl poweroff
+			confirm_action "Shut down" || return 0
+			run_power_command "Shut down" systemctl poweroff
 			;;
 	esac
 }
