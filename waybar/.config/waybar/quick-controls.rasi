@@ -43,7 +43,7 @@ inputbar {
 
 prompt {
     background-color: transparent;
-    text-color: @orange;
+    text-color: @pink;
     font: "Monaspace Radon NF Bold 13";
 }
 
