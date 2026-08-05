@@ -1,11 +1,11 @@
 /* Fox Den Launcher */
 
 window {
-	location: north west;
-	anchor: north west;
+	location: center;
+	anchor: center;
 
-	x-offset: 12px;
-	y-offset: 44px;
+	x-offset: 0px;
+	y-offset: 0px;
 	width: 360px;
 
 	background-color: #0b0e17f2;

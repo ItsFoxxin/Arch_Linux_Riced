@@ -13,10 +13,10 @@
 }
 
 window {
-    location: north east;
-    anchor: north east;
-    x-offset: -14px;
-    y-offset: 56px;
+    location: center;
+    anchor: center;
+    x-offset: 0px;
+    y-offset: 0px;
     width: 390px;
 
     background-color: @background;

@@ -260,6 +260,27 @@ hl.device({
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
+hl.bind(
+	"SUPER + SUPER_L",
+	hl.dsp.exec_cmd(
+		[[setsid -f bash "$HOME/.config/waybar/scripts/foxden-launcher.sh" >/dev/null 2>&1]]
+	),
+	{ 
+		release = true,
+		description = "Open Fox Den Launchers",
+	}
+)
+
+hl.bind(
+	mainMod .. " + S",
+	hl.dsp.exec_cmd(
+		[[setsid -f bash "$HOME/.config/waybar/scripts/quick-controls.sh" >/dev/null 2>&1]]
+	),
+	{
+		description = "Open Quick Controls",
+	}
+)
+
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
