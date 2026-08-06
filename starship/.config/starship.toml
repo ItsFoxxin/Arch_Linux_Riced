@@ -1,0 +1,209 @@
+# Fox Den Seoul — Starship prompt
+# Target: Starship 1.26.x with Bash 5.3+
+
+"$schema" = "https://starship.rs/config-schema.json"
+
+add_newline = false
+command_timeout = 800
+scan_timeout = 30
+
+# Option B with an adaptive identity label:
+# - 100 columns or wider: "🦊 FOX DEN"
+# - below 100 columns:   "🦊"
+# The frame remains in both modes, while paths and Git branches are truncated.
+format = """
+[╭─](bold fg:#ff681f) \
+${custom.root}\
+${custom.ssh}\
+${custom.fox_den}\
+$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$golang\
+$jobs\
+$cmd_duration\
+$status\
+$line_break\
+[╰─](bold fg:#ff681f) \
+$character"""
+
+continuation_prompt = "[│](bold fg:#24344c) "
+
+# ── Fox Den identity and safety context ──────────────────────────────────────
+
+[custom.fox_den]
+command = '''
+cols="$(tput cols 2>/dev/null || printf '120')"
+case "$cols" in
+    ''|*[!0-9]*) cols=120 ;;
+esac
+
+if [ "$cols" -ge 100 ]; then
+    printf '🦊 FOX DEN'
+else
+    printf '🦊'
+fi
+'''
+when = '''test "$(id -u)" -ne 0 && test -z "${SSH_CONNECTION:-}"'''
+shell = ["/bin/sh"]
+style = "bold fg:#ff681f"
+format = "[$output]($style) "
+description = "Adaptive Fox Den identity"
+
+[custom.root]
+command = "printf 'ROOT'"
+when = '''test "$(id -u)" -eq 0'''
+shell = ["/bin/sh"]
+style = "bold fg:#ffffff bg:#ff4d6d"
+format = "[ $output ]($style) "
+description = "High-visibility root warning"
+
+[custom.ssh]
+command = "printf 'SSH'"
+when = '''test -n "${SSH_CONNECTION:-}"'''
+shell = ["/bin/sh"]
+style = "bold fg:#070b12 bg:#ff9f43"
+format = "[ $output ]($style) "
+description = "High-visibility SSH warning"
+
+# ── Host and location ────────────────────────────────────────────────────────
+
+[os]
+disabled = false
+style = "bold fg:#25d9ff"
+format = "[$symbol]($style) "
+
+[os.symbols]
+Arch = "󰣇"
+Linux = "󰌽"
+Ubuntu = "󰕈"
+
+[username]
+show_always = false
+style_user = "bold fg:#edf7ff"
+style_root = "bold fg:#ff748d"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = true
+trim_at = "."
+style = "bold fg:#ff9f43"
+format = "[@$hostname]($style) "
+
+[directory]
+style = "bold fg:#25d9ff"
+read_only = " "
+read_only_style = "bold fg:#ff9f43"
+truncation_length = 4
+truncate_to_repo = true
+truncation_symbol = "…/"
+format = "[ $path]($style)[$read_only]($read_only_style) "
+
+# ── Git ──────────────────────────────────────────────────────────────────────
+
+[git_branch]
+symbol = " "
+style = "bold fg:#ff2fb3"
+truncation_length = 24
+truncation_symbol = "…"
+format = "[$symbol$branch]($style) "
+
+[git_state]
+style = "bold fg:#ff9f43"
+format = "[\\($state( $progress_current/$progress_total)\\)]($style) "
+
+[git_status]
+style = ""
+format = "([$all_status$ahead_behind]($style) )"
+conflicted = "[!${count}](bold fg:#ff4d6d)"
+ahead = "[⇡${count}](bold fg:#25d9ff)"
+behind = "[⇣${count}](bold fg:#ff9f43)"
+diverged = "[⇕⇡${ahead_count}⇣${behind_count}](bold fg:#df55ff)"
+untracked = "[?${count}](bold fg:#72e8ff)"
+stashed = "[\u0024${count}](bold fg:#4aa8ff)"
+modified = "[~${count}](bold fg:#ff2fb3)"
+staged = "[+${count}](bold fg:#55e6a5)"
+renamed = "[»${count}](bold fg:#df55ff)"
+deleted = "[✘${count}](bold fg:#ff4d6d)"
+
+# ── Development context ──────────────────────────────────────────────────────
+
+[python]
+symbol = " "
+style = "bold fg:#df55ff"
+format = "[$symbol$version( \\($virtualenv\\))]($style) "
+
+[nodejs]
+symbol = " "
+style = "bold fg:#55e6a5"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = " "
+style = "bold fg:#ff681f"
+format = "[$symbol$version]($style) "
+
+[golang]
+symbol = " "
+style = "bold fg:#72e8ff"
+format = "[$symbol$version]($style) "
+
+# Keep these quiet until their workflows are deliberately configured.
+[docker_context]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[package]
+disabled = true
+
+[shell]
+disabled = true
+
+[sudo]
+disabled = true
+
+[time]
+disabled = true
+
+# ── Command state ────────────────────────────────────────────────────────────
+
+[jobs]
+symbol = "󰜎 "
+style = "bold fg:#4aa8ff"
+number_threshold = 1
+symbol_threshold = 1
+format = "[$symbol$number]($style) "
+
+[cmd_duration]
+min_time = 3000
+show_milliseconds = false
+style = "bold fg:#ff9f43"
+format = "[󱎫 $duration]($style) "
+
+[status]
+disabled = false
+symbol = "✘ "
+not_executable_symbol = "NOEXEC "
+not_found_symbol = "NOTFOUND "
+sigint_symbol = "INT "
+signal_symbol = "SIGNAL "
+style = "bold fg:#ff748d"
+format = "[$symbol$status]($style) "
+map_symbol = true
+recognize_signal_code = true
+pipestatus = true
+pipestatus_separator = "[ | ](fg:#8291a5)"
+pipestatus_format = "[PIPE ](bold fg:#ff748d)[$pipestatus]($style) "
+
+[character]
+success_symbol = "[❯](bold fg:#25d9ff)"
+error_symbol = "[❯](bold fg:#ff4d6d)"
