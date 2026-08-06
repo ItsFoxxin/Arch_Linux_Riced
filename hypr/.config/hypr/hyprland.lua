@@ -385,4 +385,14 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+hl.config({
+	general = {
+		col = {
+			active_border = "#ff861F",
+			inactive_border = "#24344c",
+		},
+	},
+})
+
 require("foxden/autostart")
