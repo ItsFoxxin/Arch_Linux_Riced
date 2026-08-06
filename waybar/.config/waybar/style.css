@@ -15,7 +15,7 @@
     min-height: 0;
     border: none;
     border-radius: 0;
-    font-family: "Monaspace Radon NF", "Noto Sans", "Noto Color Emoji";
+    font-family: "Monaspace Radon NF", "LXGW WenKai Mono KR", "Noto Sans", "Noto Color Emoji";
     font-size: 14px;
 }
 
@@ -159,7 +159,7 @@ window#waybar {
 }
 
 #custom-input-method {
-	font-family: "Noto Color Emoji", "Monaspace Radon NF";
+	font-family: "Noto Color Emoji", "Monaspace Radon NF", "LXGW WenKai Mono KR";
 	font-size: 11px;
 	
 	min-width: 18px;
@@ -176,7 +176,7 @@ window#waybar {
 /* Monochrome Nerd Font sliders icon: fully controlled by CSS. */
 #custom-controls {
     color: @neon-pink;
-    font-family: "Monaspace Radon NF", "JetBrainsMono Nerd Font Mono";
+    font-family: "Monaspace Radon NF", "LXGW WenKai Mono KR", "JetBrainsMono Nerd Font Mono";
     font-size: 17px;
     font-weight: bold;
     min-width: 20px;
