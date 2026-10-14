@@ -30,7 +30,7 @@
   "transition-time": 180,
   "hide-on-clear": true,
   "hide-on-action": true,
-  "text-empty": "\U0001F98A The den is quiet",
+  "text-empty": "\ud83e\udd8a The den is quiet",
   "script-fail-notify": true,
   "scripts": {},
   "notification-visibility": {},
