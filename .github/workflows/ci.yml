@@ -1,0 +1,90 @@
+name: Layered CI
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate:
+    name: '1 - Validate configuration and scripts'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install validators
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y lua5.4 shellcheck
+          python3 -m pip install --disable-pip-version-check json5==0.12.1
+      - name: Validate structured configuration and Python syntax
+        run: python3 ci/validate.py
+      - name: Validate Bash and Lua syntax
+        run: |
+          bash -n bash/.bashrc
+          bash -n bash/.bash_profile
+          shellcheck --shell=bash --severity=error bash/.bashrc bash/.bash_profile
+          while IFS= read -r -d '' file; do
+            bash -n "$file"
+            shellcheck --severity=error "$file"
+          done < <(git ls-files -z '*.sh')
+          while IFS= read -r -d '' file; do
+            luac5.4 -p "$file"
+          done < <(git ls-files -z '*.lua')
+
+  test:
+    name: '2 - Test behavior and Stow deployment'
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install GNU Stow
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y stow
+      - name: Run network helper regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Exercise Stow install, reinstall, and removal in a temporary home
+        run: python3 ci/stow_smoke.py
+
+  package:
+    name: '3 - Package validated dotfiles'
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Build archive and checksum from the tested commit
+        run: |
+          mkdir -p dist
+          git archive --format=tar.gz --prefix=Arch_Linux_Riced/ --output=dist/Arch_Linux_Riced.tar.gz HEAD bash hypr kitty spotify-player starship swaync waybar README.md
+          cd dist
+          sha256sum Arch_Linux_Riced.tar.gz > SHA256SUMS
+          sha256sum --check SHA256SUMS
+          tar -tzf Arch_Linux_Riced.tar.gz
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Arch_Linux_Riced-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14

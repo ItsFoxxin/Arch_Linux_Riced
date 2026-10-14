@@ -1,0 +1,7 @@
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf
+*.lua text eol=lf
+*.yml text eol=lf
+.bashrc text eol=lf
+.bash_profile text eol=lf
