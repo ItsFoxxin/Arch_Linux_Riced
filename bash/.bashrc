@@ -1,4 +1,4 @@
-# ~/.bashrc - Fox Den Seoul
+# ~/.bashrc - Fox Den Midnight
 # Managed through GNU Stow from ~/Projects/Arch_Linux_Riced/bash
 
 # Do nothing for non-interactive Bash sessions.
@@ -40,7 +40,7 @@ fi
 # ---------------------------------------------------------------------------
 
 if command -v fzf >/dev/null 2>&1; then
-    # Fox Den Seoul colors and a compact reverse-list interface.
+    # Fox Den Midnight colors and a compact reverse-list interface.
     export FZF_DEFAULT_OPTS="\
 --height=65% \
 --layout=reverse \
@@ -49,10 +49,10 @@ if command -v fzf >/dev/null 2>&1; then
 --prompt='󰍉  ' \
 --pointer='❯' \
 --marker='✓' \
---color=bg+:#111823,bg:#070b12,spinner:#25d9ff,hl:#ff2fb3 \
---color=fg:#edf7ff,header:#8291a5,info:#ff9f43,pointer:#ff681f \
---color=marker:#55e6a5,fg+:#ffffff,prompt:#25d9ff,hl+:#df55ff \
---color=border:#ff681f,label:#ff681f"
+--color=bg+:#142335,bg:#0B1423,spinner:#97E7CA,hl:#F68D91 \
+--color=fg:#F7F5E9,header:#AFC0D1,info:#F5AD66,pointer:#F5AD66 \
+--color=marker:#97E7CA,fg+:#F7F5E9,prompt:#97E7CA,hl+:#F68D91 \
+--color=border:#F5AD66,label:#F5AD66"
 
     # Ctrl+T: select files with a bat/eza preview.
     export FZF_CTRL_T_OPTS="\

@@ -1,15 +1,16 @@
-/* Fox Den Seoul palette */
+/* Fox Den Midnight — DenKit v0.1 (GTK named colors) */
 
-@define-color fox-orange #ff681f;
-@define-color neon-cyan #25d9ff;
-@define-color neon-pink #ff2fb3;
-@define-color panel rgba(7, 11, 18, 0.90);
-@define-color panel-hover rgba(17, 24, 35, 0.94);
-@define-color text #edf7ff;
-@define-color muted #8291a5;
-@define-color warning #ffd166;
-@define-color danger #ff5f6d;
-@define-color success #7ee787;
+@define-color amber #F5AD66;
+@define-color mint #97E7CA;
+@define-color coral #F68D91;
+@define-color panel #0B1423;
+@define-color panel-hover #25384B;
+@define-color text #F7F5E9;
+@define-color muted #AFC0D1;
+@define-color warning #F5AD66;
+@define-color danger #EF5261;
+@define-color success #97E7CA;
+@define-color border #36495D;
 
 * {
     min-height: 0;
@@ -36,18 +37,18 @@ window#waybar {
 }
 
 .modules-left {
-    border-color: @fox-orange;
-    box-shadow: 0 0 6px @fox-orange;
+    border-color: @border;
+    box-shadow: none;
 }
 
 .modules-center {
-    border-color: @neon-cyan;
-    box-shadow: 0 0 6px @neon-cyan;
+    border-color: @border;
+    box-shadow: none;
 }
 
 .modules-right {
-    border-color: @neon-pink;
-    box-shadow: 0 0 6px @neon-pink;
+    border-color: @border;
+    box-shadow: none;
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -84,31 +85,31 @@ window#waybar {
     padding: 0;
 }
 
-/* Orange separators: Fox Den | workspaces | active window. */
+/* Amber separators: Fox Den | workspaces | active window. */
 #workspaces,
 #window {
-    border-left: 1px solid @fox-orange;
+    border-left: 1px solid @amber;
     margin-left: 6px;
     padding-left: 8px;
 }
 
-/* Cyan separator: Pennsylvania | Seoul. */
+/* Mint separator: Pennsylvania | Seoul. */
 #seoul-time {
-    border-left: 1px solid @neon-cyan;
+    border-left: 1px solid @mint;
     margin-left: 7px;
     padding-left: 8px;
 }
 
-/* Pink separators: connectivity | hardware | controls/tray. */
+/* Coral separators: connectivity | hardware | controls/tray. */
 #system,
 #actions {
-    border-left: 1px solid @neon-pink;
+    border-left: 1px solid @coral;
     margin-left: 7px;
     padding-left: 8px;
 }
 
 #custom-foxden {
-    color: @fox-orange;
+    color: @amber;
     font-weight: bold;
     padding-left: 7px;
     padding-right: 5px;
@@ -119,7 +120,7 @@ window#waybar {
 }
 
 #clock {
-    color: @neon-cyan;
+    color: @mint;
     font-weight: bold;
 }
 
@@ -175,19 +176,19 @@ window#waybar {
 
 /* Monochrome Nerd Font sliders icon: fully controlled by CSS. */
 #custom-controls {
-    color: @neon-pink;
+    color: @coral;
     font-family: "Monaspace Radon NF", "LXGW WenKai Mono KR", "JetBrainsMono Nerd Font Mono";
     font-size: 17px;
     font-weight: bold;
     min-width: 20px;
-    border-left: 1px solid @neon-pink;
+    border-left: 1px solid @coral;
     margin-left: 5px;
     padding-left: 5px;
     padding-right: 8px;
 }
 
 #custom-controls:hover {
-    color: @neon-cyan;
+    color: @mint;
     background: @panel-hover;
     border-radius: 8px;
 }
@@ -205,20 +206,46 @@ window#waybar {
 #battery:hover,
 #clock:hover,
 #custom-foxden:hover,
-#window:hover
-#custom-input-method:hover{
+#window:hover,
+#custom-input-method:hover {
     background: @panel-hover;
     border-radius: 8px;
 }
 
 /* Tooltips and calendars. */
 tooltip {
-    background: rgba(7, 11, 18, 0.97);
-    border: 1px solid rgba(37, 217, 255, 0.70);
+    background: #142335;
+    border: 1px solid #36495D;
     border-radius: 10px;
 }
 
 tooltip label {
     color: @text;
     padding: 7px 9px;
+}
+
+/* Explicit workspace states avoid inheriting a system GTK accent. */
+#workspaces button {
+    color: @text;
+    background: transparent;
+}
+
+#workspaces button.active {
+    color: #0B1423;
+    background: @coral;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+#workspaces button:hover,
+#workspaces button:focus {
+    box-shadow: inset 0 0 0 2px @mint;
+    border-radius: 8px;
+}
+
+#workspaces button.urgent {
+    color: @danger;
+    background: @panel;
+    box-shadow: inset 0 -2px @danger;
+    font-weight: bold;
 }

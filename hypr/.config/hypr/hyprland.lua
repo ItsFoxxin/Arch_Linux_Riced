@@ -17,6 +17,13 @@
 -- require("myColors")
 
 
+-- Fox Den Midnight (DenKit v0.1), native Lua colors.
+local midnight = {
+    focus = "rgba(97e7caff)",
+    border = "rgba(36495dff)",
+    shadow = 0xee0b1423,
+}
+
 ------------------
 ---- MONITORS ----
 ------------------
@@ -98,8 +105,8 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
-            inactive_border = "rgba(595959aa)",
+            active_border   = midnight.focus,
+            inactive_border = midnight.border,
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -123,7 +130,7 @@ hl.config({
             enabled      = true,
             range        = 4,
             render_power = 3,
-            color        = 0xee1a1a1a,
+            color        = midnight.shadow,
         },
 
         blur = {
@@ -389,8 +396,8 @@ hl.window_rule({
 hl.config({
 	general = {
 		col = {
-			active_border = "#ff861F",
-			inactive_border = "#24344c",
+			active_border = midnight.focus,
+			inactive_border = midnight.border,
 		},
 	},
 })

@@ -1,4 +1,5 @@
-/* Fox Den Launcher */
+/* Fox Den Launcher — Fox Den Midnight */
+@import "foxden-midnight.rasi"
 
 window {
 	location: center;
@@ -8,15 +9,15 @@ window {
 	y-offset: 0px;
 	width: 360px;
 
-	background-color: #0b0e17f2;
+	background-color: @midnight;
 
 	border: 2px;
-	border-color: #ff6a00;
+	border-color: @den-border;
 	border-radius: 12px;
 }
 
 mainbox {
-	background-color: #0b0e17f2;
+	background-color: @midnight;
 
 	padding: 10px;
 	spacing: 8px;
@@ -25,32 +26,32 @@ mainbox {
 }
 
 inputbar {
-	background-color: #151a29;
+	background-color: @raised;
 
 	padding: 7px 9px;
 	spacing: 8px;
 
 	border: 0px 0px 1px 0px;
-	border-color: #ff6a00;
+	border-color: @den-border;
 	border-radius: 8px;
 }
 
 prompt {
 	background-color: transparent;
-	text-color: #ff8a26;
+	text-color: @amber;
 	font: "Monaspace Radon NF Bold 13";
 }
 
 entry {
 	background-color: transparent;
-	text-color: #f4f4f5;
+	text-color: @cream;
 
 	placeholder: "Search the den...";
-	placeholder-color: #7f8799;
+	placeholder-color: @muted;
 }
 
 listview {
-	background-color: #0b0e17f2;
+	background-color: @midnight;
 
 	lines: 6;
 	spacing: 4px;
@@ -61,7 +62,7 @@ listview {
 
 element {
 	background-color: transparent;
-	text-color: #f4f4f5;
+	text-color: @cream;
 
 	padding: 8px 10px;
 
@@ -71,11 +72,11 @@ element {
 }
 
 element selected {
-	background-color: #ff6a0026;
-	text-color: #25d9ff;
+	background-color: @coral;
+	text-color: @midnight;
 
 	border: 1px;
-	border-color: #25d9ff;
+	border-color: @mint;
 }
 
 element-text {
@@ -84,7 +85,7 @@ element-text {
 }
 
 element-text selected {
-	text-color: #25d9ff;
+	text-color: @midnight;
 }
 
 element-icon {

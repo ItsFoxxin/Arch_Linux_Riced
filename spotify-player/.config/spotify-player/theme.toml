@@ -1,50 +1,51 @@
+# Fox Den Midnight / DenKit v0.1. Keep the existing fox_den theme ID.
 [[themes]]
 name = "fox_den"
 
 [themes.palette]
-background = "#070910"
-foreground = "#f4f7ff"
+background = "#0B1423"
+foreground = "#F7F5E9"
 
-black = "#11141d"
-red = "#ff4d6d"
-green = "#25ff88"
-yellow = "#ffd166"
-blue = "#4c7dff"
-magenta = "#ff3ec8"
-cyan = "#00d9ff"
-white = "#cfd8ec"
+black = "#142335"
+red = "#EF5261"
+green = "#97E7CA"
+yellow = "#F5AD66"
+blue = "#97E7CA"
+magenta = "#F68D91"
+cyan = "#97E7CA"
+white = "#AFC0D1"
 
-bright_black = "#657184"
-bright_red = "#ff6b35"
-bright_green = "#5cff9d"
-bright_yellow = "#ffe28a"
-bright_blue = "#78a1ff"
-bright_magenta = "#ff78df"
-bright_cyan = "#72f1ff"
-bright_white = "#ffffff"
+bright_black = "#AFC0D1"
+bright_red = "#EF5261"
+bright_green = "#97E7CA"
+bright_yellow = "#F5AD66"
+bright_blue = "#97E7CA"
+bright_magenta = "#F68D91"
+bright_cyan = "#97E7CA"
+bright_white = "#F7F5E9"
 
 [themes.component_style]
-block_title = { fg = "#00d9ff", modifiers = ["Bold"] }
-border = { fg = "#ff6b35" }
+block_title = { fg = "#97E7CA", modifiers = ["Bold"] }
+border = { fg = "#36495D" }
 
-playback_status = { fg = "#25ff88", modifiers = ["Bold"] }
-playback_track = { fg = "#f4f7ff", modifiers = ["Bold"] }
-playback_artists = { fg = "#00d9ff" }
-playback_album = { fg = "#ff3ec8" }
-playback_genres = { fg = "#657184", modifiers = ["Italic"] }
-playback_metadata = { fg = "#657184" }
+playback_status = { fg = "#97E7CA", modifiers = ["Bold"] }
+playback_track = { fg = "#F7F5E9", modifiers = ["Bold"] }
+playback_artists = { fg = "#97E7CA" }
+playback_album = { fg = "#F68D91" }
+playback_genres = { fg = "#AFC0D1", modifiers = ["Italic"] }
+playback_metadata = { fg = "#AFC0D1" }
 
-playback_progress_bar = { fg = "#ff6b35" }
-playback_progress_bar_unfilled = { fg = "#303644" }
+playback_progress_bar = { fg = "#F5AD66" }
+playback_progress_bar_unfilled = { fg = "#36495D" }
 
-current_playing = { fg = "#25ff88", modifiers = ["Bold"] }
-page_desc = { fg = "#00d9ff", modifiers = ["Bold"] }
-playlist_desc = { fg = "#657184" }
-table_header = { fg = "#ff3ec8", modifiers = ["Bold"] }
+current_playing = { fg = "#97E7CA", modifiers = ["Bold"] }
+page_desc = { fg = "#97E7CA", modifiers = ["Bold"] }
+playlist_desc = { fg = "#AFC0D1" }
+table_header = { fg = "#F68D91", modifiers = ["Bold"] }
 
-selection = { fg = "#070910", bg = "#00d9ff", modifiers = ["Bold"] }
-secondary_row = { fg = "#aab4c3" }
-like = { fg = "#ff3ec8", modifiers = ["Bold"] }
+selection = { fg = "#0B1423", bg = "#F68D91", modifiers = ["Bold"] }
+secondary_row = { fg = "#AFC0D1" }
+like = { fg = "#F68D91", modifiers = ["Bold"] }
 
-lyrics_played = { fg = "#657184" }
-lyrics_playing = { fg = "#00d9ff", modifiers = ["Bold"] }
+lyrics_played = { fg = "#AFC0D1" }
+lyrics_playing = { fg = "#97E7CA", modifiers = ["Bold"] }
