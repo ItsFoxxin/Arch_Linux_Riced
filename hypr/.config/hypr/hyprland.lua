@@ -279,7 +279,7 @@ hl.bind(
 )
 
 hl.bind(
-	mainMod .. " + S",
+	mainMod .. " + ALT + S",
 	hl.dsp.exec_cmd(
 		[[setsid -f bash "$HOME/.config/waybar/scripts/quick-controls.sh" >/dev/null 2>&1]]
 	),
@@ -288,6 +288,40 @@ hl.bind(
 	}
 )
 
+-- ---------------------------------------------------------------------------
+-- Fox Den capture shortcuts
+-- ---------------------------------------------------------------------------
+
+-- Windows-style snipping workflow:
+-- Super + Shift + S -> select region -> clipboard only
+hl.bind(
+    mainMod .. " + SHIFT + S",
+    hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"),
+    { description = "Screenshot region to clipboard" }
+)
+
+-- Print -> select/capture monitor -> clipboard only
+hl.bind(
+    "Print",
+    hl.dsp.exec_cmd("hyprshot -m output --clipboard-only"),
+    { description = "Screenshot monitor to clipboard" }
+)
+
+-- Super + Print -> select window -> clipboard only
+hl.bind(
+    mainMod .. " + Print",
+    hl.dsp.exec_cmd("hyprshot -m window --clipboard-only"),
+    { description = "Screenshot window to clipboard" }
+)
+
+-- Super + Shift + A -> annotate a selected region in Satty
+hl.bind(
+    mainMod .. " + SHIFT + A",
+    hl.dsp.exec_cmd(
+        [[sh -c 'mkdir -p "$HOME/Pictures/Screenshots"; grim -g "$(slurp -o)" -t ppm - | satty -f - --output-filename "$HOME/Pictures/Screenshots/satty-$(date +%Y-%m-%d_%H-%M-%S).png"']]
+    ),
+    { description = "Annotate screenshot region" }
+)
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
@@ -315,7 +349,7 @@ end
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + ALT + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -357,10 +391,15 @@ local suppressMaximizeRule = hl.window_rule({
     suppress_event = "maximize",
 })
 -- suppressMaximizeRule:set_enabled(false)
-hl.workspace_rule({
-	workspace = "2",
-	on_created_empty = "kitty -e spotify_player",
-})
+-- Launch Spotify TUI when workspace 2 is created empty
+hl.on("workspace.created", function(ws)
+    if ws.name == "2" and ws.is_empty then
+        hl.exec_cmd("kitty -e spotify_player", {
+            workspace = "2 silent"
+        })
+    end
+end)
+
 hl.window_rule({
     -- Fix some dragging issues with XWayland
     name  = "fix-xwayland-drags",
