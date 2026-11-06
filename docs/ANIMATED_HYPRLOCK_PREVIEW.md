@@ -12,19 +12,24 @@ It does **not** replace `hyprlock.conf`, change a lock keybinding, or launch at 
   static lock theme (`Monaspace Radon NF` and `LXGW WenKai Mono KR`).
 - One active display, named `eDP-1`; use a numbered workspace.
 - The video at `~/Pictures/Wallpapers/FoxDen/foxden_hyprlock_animated.mp4`.
-- Stow the `hypr` package (or copy the two new files into matching `~/.config/hypr`
-  locations) before testing. Example from the repository root:
+- No installation is required for the first test. Fetch the feature branch into
+  an isolated worktree, preserving your current branch and its local edits:
 
   ```bash
-  stow --simulate --verbose -t "$HOME" hypr
-  stow -t "$HOME" hypr
+  cd ~/Projects/Arch_Linux_Riced
+  git fetch origin feat/foxden-animated-hyprlock
+  git worktree add --detach ../Arch_Linux_Riced_locktest origin/feat/foxden-animated-hyprlock
   ```
 
 ## Run
 
 ```bash
-bash "$HOME/.config/hypr/scripts/foxden-lock-animated-test.sh"
+bash "$HOME/Projects/Arch_Linux_Riced_locktest/hypr/.config/hypr/scripts/foxden-lock-animated-test.sh"
 ```
+
+The launcher resolves `hyprlock-animated.conf` beside its own script, including
+when run from an installed Stow package. You may override `FOX_DEN_LOCK_VIDEO`
+or `FOX_DEN_LOCK_CONFIG` to test alternative local file paths.
 
 The launcher checks prerequisites, requires session-lock xray to start **off**,
 switches to a temporary empty workspace, plays the video on the overlay layer,
