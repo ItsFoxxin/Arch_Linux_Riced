@@ -1,37 +1,36 @@
 /* =========================================================
- * Fox Den Core — SwayNC 0.12.6
- * Full replacement theme
+ * Fox Den Midnight — DenKit v0.1 — SwayNC 0.12.6
+ * Native GTK theme; existing notification behavior is unchanged
  * ========================================================= */
 
 :root {
-  --fox-bg: #070910;
-  --fox-panel: rgba(7, 9, 16, 0.97);
-  --fox-surface: rgba(13, 18, 30, 0.97);
-  --fox-surface-hover: rgba(23, 31, 48, 0.99);
-  --fox-surface-focus: rgba(0, 217, 255, 0.12);
+  --fox-bg: #0B1423;
+  --fox-panel: #0B1423;
+  --fox-surface: #142335;
+  --fox-surface-hover: #25384B;
+  --fox-surface-focus: rgba(151, 231, 202, 0.12);
 
-  --fox-orange: #ff6b35;
-  --fox-cyan: #00d9ff;
-  --fox-magenta: #ff3ec8;
-  --fox-green: #25ff88;
-  --fox-yellow: #ffd166;
-  --fox-critical: #ff4d6d;
+  --fox-amber: #F5AD66;
+  --fox-mint: #97E7CA;
+  --fox-coral: #F68D91;
+  --fox-success: #97E7CA;
+  --fox-warning: #F5AD66;
+  --fox-critical: #EF5261;
 
-  --fox-text: #f4f7ff;
-  --fox-muted: #8fa0b5;
-  --fox-disabled: #657184;
+  --fox-text: #F7F5E9;
+  --fox-muted: #AFC0D1;
+  --fox-disabled: #AFC0D1;
 
   --notification-icon-size: 58px;
   --notification-app-icon-size: 20px;
   --notification-group-icon-size: 30px;
 
+  --fox-border-color: #36495D;
   --fox-radius: 14px;
-  --fox-border: 2px solid var(--fox-orange);
-  --fox-border-soft: 1px solid rgba(255, 107, 53, 0.45);
+  --fox-border: 2px solid var(--fox-border-color);
+  --fox-border-soft: 1px solid var(--fox-border-color);
 
-  --fox-shadow:
-    0 0 0 1px rgba(255, 107, 53, 0.20),
-    0 0 14px rgba(255, 107, 53, 0.24);
+  --fox-shadow: 0 2px 8px rgba(11, 20, 35, 0.24);
 
   --font-size-body: 15px;
   --font-size-summary: 16px;
@@ -77,15 +76,13 @@ blankwindow,
 }
 
 .notification-row .notification-background .notification.low {
-  border-color: var(--fox-orange);
+  border-color: var(--fox-amber);
   box-shadow: var(--fox-shadow);
 }
 
 .notification-row .notification-background .notification.critical {
   border-color: var(--fox-critical);
-  box-shadow:
-    0 0 0 1px rgba(255, 77, 109, 0.22),
-    0 0 16px rgba(255, 77, 109, 0.30);
+  box-shadow: inset 3px 0 var(--fox-critical);
 }
 
 .notification-row
@@ -142,7 +139,7 @@ blankwindow,
 }
 
 .notification-content .text-box .summary {
-  color: var(--fox-cyan);
+  color: var(--fox-mint);
   background: transparent;
   font-size: var(--font-size-summary);
   font-weight: bold;
@@ -150,7 +147,7 @@ blankwindow,
 }
 
 .notification-content .text-box .time {
-  color: var(--fox-magenta);
+  color: var(--fox-coral);
   background: transparent;
   font-size: 13px;
   font-weight: bold;
@@ -171,13 +168,13 @@ blankwindow,
 }
 
 .notification-content progressbar trough {
-  background: rgba(152, 166, 184, 0.22);
+  background: rgba(54, 73, 93, 0.22);
   border-radius: 999px;
   min-height: 5px;
 }
 
 .notification-content progressbar progress {
-  background: var(--fox-cyan);
+  background: var(--fox-mint);
   border-radius: 999px;
   min-height: 5px;
 }
@@ -194,9 +191,9 @@ blankwindow,
  * ========================================================= */
 
 .close-button {
-  background: rgba(255, 62, 200, 0.10);
-  color: var(--fox-magenta);
-  border: 1px solid rgba(255, 62, 200, 0.38);
+  background: rgba(246, 141, 145, 0.10);
+  color: var(--fox-coral);
+  border: 1px solid rgba(246, 141, 145, 0.38);
   border-radius: 100%;
   box-shadow: none;
   margin-top: 8px;
@@ -207,9 +204,9 @@ blankwindow,
 }
 
 .close-button:hover {
-  background: var(--fox-magenta);
+  background: var(--fox-coral);
   color: var(--fox-bg);
-  border-color: var(--fox-magenta);
+  border-color: var(--fox-coral);
   box-shadow: none;
 }
 
@@ -226,15 +223,15 @@ blankwindow,
 }
 
 .notification-action > button {
-  background: rgba(0, 217, 255, 0.10);
-  color: var(--fox-cyan);
-  border: 1px solid rgba(0, 217, 255, 0.40);
+  background: rgba(151, 231, 202, 0.10);
+  color: var(--fox-mint);
+  border: 1px solid rgba(151, 231, 202, 0.40);
   border-radius: 10px;
 }
 
 .notification-action > button:hover {
-  background: rgba(0, 217, 255, 0.22);
-  border-color: var(--fox-cyan);
+  background: rgba(151, 231, 202, 0.22);
+  border-color: var(--fox-mint);
 }
 
 /* =========================================================
@@ -248,27 +245,27 @@ blankwindow,
 .inline-reply-entry {
   background: var(--fox-bg);
   color: var(--fox-text);
-  caret-color: var(--fox-cyan);
-  border: 1px solid rgba(0, 217, 255, 0.45);
+  caret-color: var(--fox-mint);
+  border: 1px solid rgba(151, 231, 202, 0.45);
   border-radius: 10px;
 }
 
 .inline-reply-button {
-  background: rgba(255, 107, 53, 0.14);
-  color: var(--fox-orange);
-  border: 1px solid rgba(255, 107, 53, 0.50);
+  background: rgba(245, 173, 102, 0.14);
+  color: var(--fox-amber);
+  border: 1px solid rgba(245, 173, 102, 0.50);
   border-radius: 10px;
   margin-left: 4px;
 }
 
 .inline-reply-button:hover {
-  background: rgba(255, 107, 53, 0.28);
+  background: rgba(245, 173, 102, 0.28);
 }
 
 .inline-reply-button:disabled {
   background: transparent;
   color: var(--fox-disabled);
-  border-color: rgba(101, 113, 132, 0.35);
+  border-color: rgba(54, 73, 93, 0.35);
 }
 
 /* =========================================================
@@ -295,12 +292,12 @@ blankwindow,
 }
 
 .notification-group .notification-group-headers .notification-group-icon {
-  color: var(--fox-orange);
+  color: var(--fox-amber);
   -gtk-icon-size: var(--notification-group-icon-size);
 }
 
 .notification-group .notification-group-headers .notification-group-header {
-  color: var(--fox-cyan);
+  color: var(--fox-mint);
   font-weight: bold;
 }
 
@@ -330,9 +327,7 @@ blankwindow,
   color: var(--fox-text);
   border: var(--fox-border);
   border-radius: 18px;
-  box-shadow:
-    0 0 0 1px rgba(255, 107, 53, 0.18),
-    0 0 20px rgba(0, 217, 255, 0.16);
+  box-shadow: var(--fox-shadow);
 }
 
 .control-center .control-center-list-placeholder {
@@ -361,7 +356,7 @@ blankwindow,
  * ========================================================= */
 
 .widget {
-  background: rgba(17, 23, 37, 0.80);
+  background: #142335;
   color: var(--fox-text);
   border: var(--fox-border-soft);
   border-radius: var(--fox-radius);
@@ -371,7 +366,7 @@ blankwindow,
 
 /* Title */
 .widget-title > label {
-  color: var(--fox-cyan);
+  color: var(--fox-mint);
   font-size: 1.35rem;
   font-weight: bold;
   margin-right: 8px;
@@ -379,16 +374,16 @@ blankwindow,
 
 .widget-title > button,
 .widget-inhibitors > button {
-  background: rgba(255, 107, 53, 0.14);
-  color: var(--fox-orange);
-  border: 1px solid rgba(255, 107, 53, 0.50);
+  background: rgba(245, 173, 102, 0.14);
+  color: var(--fox-amber);
+  border: 1px solid rgba(245, 173, 102, 0.50);
   border-radius: 10px;
   margin-left: 8px;
 }
 
 .widget-title > button:hover,
 .widget-inhibitors > button:hover {
-  background: var(--fox-orange);
+  background: var(--fox-amber);
   color: var(--fox-bg);
 }
 
@@ -408,8 +403,8 @@ blankwindow,
 }
 
 .widget-dnd switch:checked {
-  background: var(--fox-green);
-  border-color: var(--fox-green);
+  background: var(--fox-success);
+  border-color: var(--fox-success);
 }
 
 .widget-dnd switch slider {
@@ -422,10 +417,10 @@ blankwindow,
  * ========================================================= */
 
 :root {
-  --mpris-album-art-overlay: rgba(7, 9, 16, 0.72);
-  --mpris-button-hover: rgba(0, 217, 255, 0.18);
+  --mpris-album-art-overlay: rgba(11, 20, 35, 0.94);
+  --mpris-button-hover: rgba(151, 231, 202, 0.18);
   --mpris-album-art-icon-size: 92px;
-  --mpris-album-art-shadow: 0 0 12px rgba(0, 217, 255, 0.18);
+  --mpris-album-art-shadow: var(--fox-shadow);
 }
 
 .widget-mpris {
@@ -464,7 +459,7 @@ blankwindow,
 .widget-mpris-player
 .mpris-overlay
 .widget-mpris-title {
-  color: var(--fox-cyan);
+  color: var(--fox-mint);
   font-size: 1.15rem;
   font-weight: bold;
 }
@@ -479,13 +474,13 @@ blankwindow,
 
 .widget-mpris .widget-mpris-player .mpris-overlay button {
   background: transparent;
-  color: var(--fox-orange);
+  color: var(--fox-amber);
   border-radius: 999px;
 }
 
 .widget-mpris .widget-mpris-player .mpris-overlay button:hover {
   background: var(--mpris-button-hover);
-  color: var(--fox-cyan);
+  color: var(--fox-mint);
 }
 
 /* =========================================================
@@ -494,7 +489,7 @@ blankwindow,
 
 .widget-label > label,
 .widget-inhibitors > label {
-  color: var(--fox-cyan);
+  color: var(--fox-mint);
   font-size: 1.1rem;
 }
 
@@ -510,9 +505,9 @@ blankwindow,
 }
 
 .widget-buttons-grid flowboxchild > button.toggle:checked {
-  background: var(--fox-orange);
+  background: var(--fox-amber);
   color: var(--fox-bg);
-  border-color: var(--fox-orange);
+  border-color: var(--fox-amber);
 }
 
 .widget-volume row image {
@@ -524,17 +519,31 @@ blankwindow,
 }
 
 scale trough {
-  background: rgba(152, 166, 184, 0.22);
+  background: rgba(54, 73, 93, 0.22);
   border-radius: 999px;
   min-height: 6px;
 }
 
 scale highlight {
-  background: var(--fox-cyan);
+  background: var(--fox-mint);
   border-radius: 999px;
 }
 
 scale slider {
-  background: var(--fox-orange);
+  background: var(--fox-amber);
   border-radius: 999px;
+}
+
+/* Mint outlines retain keyboard focus across notification and widget actions. */
+button:focus,
+switch:focus,
+.inline-reply-entry:focus,
+.notification-row:focus,
+.notification-group:focus {
+  outline: 2px solid var(--fox-mint);
+  outline-offset: -2px;
+}
+
+.widget-dnd switch:checked slider {
+  background: var(--fox-bg);
 }

@@ -17,6 +17,13 @@
 -- require("myColors")
 
 
+-- Fox Den Midnight (DenKit v0.1), native Lua colors.
+local midnight = {
+    focus = "rgba(97e7caff)",
+    border = "rgba(36495dff)",
+    shadow = 0xee0b1423,
+}
+
 ------------------
 ---- MONITORS ----
 ------------------
@@ -98,8 +105,8 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
-            inactive_border = "rgba(595959aa)",
+            active_border   = midnight.focus,
+            inactive_border = midnight.border,
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -123,7 +130,7 @@ hl.config({
             enabled      = true,
             range        = 4,
             render_power = 3,
-            color        = 0xee1a1a1a,
+            color        = midnight.shadow,
         },
 
         blur = {
@@ -272,13 +279,59 @@ hl.bind(
 )
 
 hl.bind(
-	mainMod .. " + S",
+	mainMod .. " + ALT + S",
 	hl.dsp.exec_cmd(
 		[[setsid -f bash "$HOME/.config/waybar/scripts/quick-controls.sh" >/dev/null 2>&1]]
 	),
 	{
 		description = "Open Quick Controls",
 	}
+)
+
+-- ---------------------------------------------------------------------------
+-- Fox Den capture shortcuts
+-- ---------------------------------------------------------------------------
+
+-- Windows-style snipping workflow:
+-- Super + Shift + S -> select region -> clipboard only
+hl.bind(
+    mainMod .. " + SHIFT + S",
+    hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"),
+    { description = "Screenshot region to clipboard" }
+)
+
+-- Print -> select/capture monitor -> clipboard only
+hl.bind(
+    "Print",
+    hl.dsp.exec_cmd("hyprshot -m output --clipboard-only"),
+    { description = "Screenshot monitor to clipboard" }
+)
+
+-- Super + Print -> select window -> clipboard only
+hl.bind(
+    mainMod .. " + Print",
+    hl.dsp.exec_cmd("hyprshot -m window --clipboard-only"),
+    { description = "Screenshot window to clipboard" }
+)
+
+-- Super + Shift + A -> annotate a selected region in Satty
+hl.bind(
+    mainMod .. " + SHIFT + A",
+    hl.dsp.exec_cmd(
+        [[sh -c 'mkdir -p "$HOME/Pictures/Screenshots"; grim -g "$(slurp -o)" -t ppm - | satty -f - --output-filename "$HOME/Pictures/Screenshots/satty-$(date +%Y-%m-%d_%H-%M-%S).png"']]
+    ),
+    { description = "Annotate screenshot region" }
+)
+
+-- Fox Den Screen Recording
+-- Super + Shift + R: Start / Stop Recording
+
+hl.bind(
+    mainMod .. " + SHIFT + R",
+    hl.dsp.exec_cmd(
+        [[bash "$HOME/.config/hypr/scripts/foxden-record-toggle.sh" toggle]]
+    ),
+    { description = "Toggle Fox Den screen recording" }
 )
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
@@ -308,7 +361,7 @@ end
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + ALT + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -350,10 +403,15 @@ local suppressMaximizeRule = hl.window_rule({
     suppress_event = "maximize",
 })
 -- suppressMaximizeRule:set_enabled(false)
-hl.workspace_rule({
-	workspace = "2",
-	on_created_empty = "kitty -e spotify_player",
-})
+-- Launch Spotify TUI when workspace 2 is created empty
+hl.on("workspace.created", function(ws)
+    if ws.name == "2" and ws.is_empty then
+        hl.exec_cmd("kitty -e spotify_player", {
+            workspace = "2 silent"
+        })
+    end
+end)
+
 hl.window_rule({
     -- Fix some dragging issues with XWayland
     name  = "fix-xwayland-drags",
@@ -389,8 +447,8 @@ hl.window_rule({
 hl.config({
 	general = {
 		col = {
-			active_border = "#ff861F",
-			inactive_border = "#24344c",
+			active_border = midnight.focus,
+			inactive_border = midnight.border,
 		},
 	},
 })

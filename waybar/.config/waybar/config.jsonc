@@ -54,11 +54,11 @@
             "on-scroll": 1,
             "iso8601": true,
             "format": {
-                "months": "<span color='#25d9ff'><b>{}</b></span>",
-                "days": "<span color='#edf7ff'>{}</span>",
-                "weeks": "<span color='#8291a5'><b>W{}</b></span>",
-                "weekdays": "<span color='#ff681f'><b>{}</b></span>",
-                "today": "<span color='#df55ff'><b><u>{}</u></b></span>"
+                "months": "<span color='#97E7CA'><b>{}</b></span>",
+                "days": "<span color='#F7F5E9'>{}</span>",
+                "weeks": "<span color='#AFC0D1'><b>W{}</b></span>",
+                "weekdays": "<span color='#F5AD66'><b>{}</b></span>",
+                "today": "<span color='#F68D91'><b><u>{}</u></b></span>"
             }
         },
         "actions": {
@@ -77,11 +77,11 @@
             "on-scroll": 1,
             "iso8601": true,
             "format": {
-                "months": "<span color='#25d9ff'><b>{}</b></span>",
-                "days": "<span color='#edf7ff'>{}</span>",
-                "weeks": "<span color='#8291a5'><b>W{}</b></span>",
-                "weekdays": "<span color='#ff681f'><b>{}</b></span>",
-                "today": "<span color='#df55ff'><b><u>{}</u></b></span>"
+                "months": "<span color='#97E7CA'><b>{}</b></span>",
+                "days": "<span color='#F7F5E9'>{}</span>",
+                "weeks": "<span color='#AFC0D1'><b>W{}</b></span>",
+                "weekdays": "<span color='#F5AD66'><b>{}</b></span>",
+                "today": "<span color='#F68D91'><b><u>{}</u></b></span>"
             }
         },
         "actions": {

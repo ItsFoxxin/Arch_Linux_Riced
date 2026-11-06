@@ -1,0 +1,13 @@
+/* Fox Den Midnight / DenKit v0.1. Shared by both existing Rofi menus. */
+* {
+    midnight: #0B1423;
+    slate: #25384B;
+    mint: #97E7CA;
+    coral: #F68D91;
+    amber: #F5AD66;
+    cream: #F7F5E9;
+    raised: #142335;
+    den-border: #36495D;
+    muted: #AFC0D1;
+    critical: #EF5261;
+}
