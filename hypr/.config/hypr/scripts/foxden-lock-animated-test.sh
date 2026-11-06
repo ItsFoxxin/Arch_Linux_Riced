@@ -2,8 +2,11 @@
 # Manual preview only. Never bind this to the production lock hotkey yet.
 set -Eeuo pipefail
 
-video="${HOME}/Pictures/Wallpapers/FoxDen/foxden_hyprlock_animated.mp4"
-cfg="${HOME}/.config/hypr/hyprlock-animated.conf"
+# Resolve the preview configuration beside this script. Works from a Git
+# worktree without installing files into the active desktop configuration.
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+video="${FOX_DEN_LOCK_VIDEO:-${HOME}/Pictures/Wallpapers/FoxDen/foxden_hyprlock_animated.mp4}"
+cfg="${FOX_DEN_LOCK_CONFIG:-${script_dir}/../hyprlock-animated.conf}"
 output="eDP-1"
 
 for command_name in hyprctl hyprlock mpvpaper jq; do
