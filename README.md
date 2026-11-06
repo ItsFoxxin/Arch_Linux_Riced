@@ -68,6 +68,16 @@ A customized Hyprlock configuration featuring:
 
 The lock screen includes the Korean phrase **시작이 반이다** — "Well begun is half done."
 
+### Fox Den Login Screen (ReGreet)
+
+The optional **pre-session login screen** lives in [`greetd/`](greetd/README.md)
+and uses a short, silent video of the fox working in a midnight Seoul server
+workshop. ReGreet renders the video background directly through GStreamer;
+no separate wallpaper service is needed. It retains the working greetd/PAM
+login flow, user/session selectors, and a still-image fallback. Its system
+files are installed separately from the GNU Stow home dotfiles, after a safe
+`regreet --demo` preview.
+
 ### Kitty Terminal
 
 A customized Kitty terminal environment featuring:
@@ -111,6 +121,7 @@ A custom two-line Starship shell prompt provides:
 | Configuration | Lua |
 | Status Bar | Waybar |
 | Lock Screen | Hyprlock |
+| Login Screen | greetd + ReGreet (optional) |
 | Wallpaper | Hyprpaper |
 | Terminal | Kitty |
 | Shell | Bash |
@@ -134,6 +145,13 @@ Arch_Linux_Riced/
 ├── bash/
 ├── hypr/
 │   └── .config/hypr/
+├── greetd/
+│   ├── assets/
+│   ├── stage-assets.sh
+│   ├── regreet.toml
+│   ├── regreet-static.toml
+│   ├── regreet.css
+│   └── README.md
 ├── kitty/
 │   └── .config/kitty/
 ├── spotify-player/
@@ -154,6 +172,8 @@ Arch_Linux_Riced/
 ```
 
 The seven dotfile packages are organized for deployment with GNU Stow.
+The `greetd/` directory is an additional system-level theme package and is not
+included in a home-directory Stow installation.
 
 ## Fox Den Midnight — DenKit v0.1
 

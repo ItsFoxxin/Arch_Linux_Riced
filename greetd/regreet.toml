@@ -1,0 +1,25 @@
+# Fox Den Midnight — ReGreet (animated login screen)
+# ReGreet reads this from /etc/greetd/regreet.toml by default.
+# The video is silent; authentication remains entirely with greetd/PAM.
+
+skip_selection = false
+
+[background]
+path = "/usr/share/backgrounds/foxden/foxden-greeter.mp4"
+fit = "Cover"
+
+[GTK]
+application_prefer_dark_theme = true
+theme_name = "Adwaita"
+font_name = "Monaspace Radon NF 16"
+cursor_blink = true
+
+[appearance]
+greeting_msg = "어서 와, Fox! 🦊"
+
+[widget.clock]
+format = "%A · %I:%M %p"
+resolution = "1s"
+timezone = "America/New_York"
+halign = "center"
+valign = "top"

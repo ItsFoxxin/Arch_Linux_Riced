@@ -77,7 +77,7 @@ jobs:
       - name: Build archive and checksum from the tested commit
         run: |
           mkdir -p dist
-          git archive --format=tar.gz --prefix=Arch_Linux_Riced/ --output=dist/Arch_Linux_Riced.tar.gz HEAD bash hypr kitty spotify-player starship swaync waybar README.md
+          git archive --format=tar.gz --prefix=Arch_Linux_Riced/ --output=dist/Arch_Linux_Riced.tar.gz HEAD bash greetd hypr kitty spotify-player starship swaync waybar README.md
           cd dist
           sha256sum Arch_Linux_Riced.tar.gz > SHA256SUMS
           sha256sum --check SHA256SUMS
