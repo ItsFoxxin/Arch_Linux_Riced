@@ -126,3 +126,7 @@ if command -v starship >/dev/null 2>&1; then
 else
     PS1='[\u@\h \W]\$ '
 fi
+
+# Fox Den - Proton Pass SSH Agent
+export PATH="$HOME/.local/bin:$PATH"
+export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
