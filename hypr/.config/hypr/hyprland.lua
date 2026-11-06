@@ -322,6 +322,18 @@ hl.bind(
     ),
     { description = "Annotate screenshot region" }
 )
+
+-- Fox Den Screen Recording
+-- Super + Shift + R: Start / Stop Recording
+
+hl.bind(
+    mainMod .. " + SHIFT + R",
+    hl.dsp.exec_cmd(
+        [[bash "$HOME/.config/hypr/scripts/foxden-record-toggle.sh" toggle]]
+    ),
+    { description = "Toggle Fox Den screen recording" }
+)
+
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
