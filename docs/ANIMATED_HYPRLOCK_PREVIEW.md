@@ -1,10 +1,32 @@
 # Fox Den Midnight animated lock screen — test preview
 
 This optional preview uses the local five-second Fox Den server-room animation as a
-live Hyprlock backdrop, with a central Midnight glass panel, bilingual lock hints,
+live Hyprlock backdrop, with a compact LEFT-aligned Midnight glass panel by the bench, bilingual lock hints,
 24-hour Pennsylvania and Seoul clocks, and PAM password authentication.
 
 It does **not** replace `hyprlock.conf`, change a lock keybinding, or launch at login.
+
+### Bench-side revision
+
+On the intended 1920×1080 display, the panel is centered near x=350 rather than
+x=960 (the original center), keeping its edges around x=70–630. This leaves
+most of the right half free for the animated fox. The panel is 560×610, with a
+slightly translucent Midnight fill, mint accent rule, quieter typography, and
+preserved Pennsylvania/Seoul 24-hour clocks. No video crop or placement changes
+are required to test this layout. The panel uses fixed pixel positioning and
+will need adjustments for a different display resolution or scale.
+
+If an older isolated worktree already exists, refresh it instead of running
+`git worktree add` again:
+
+```bash
+cd ~/Projects/Arch_Linux_Riced
+git fetch origin feat/foxden-animated-hyprlock
+git -C ../Arch_Linux_Riced_locktest switch --detach origin/feat/foxden-animated-hyprlock
+```
+
+The switch will refuse to overwrite incompatible local changes in the test
+worktree. It does not change your main desktop repository or its branch.
 
 ## Prerequisites
 
