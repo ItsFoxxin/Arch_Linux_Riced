@@ -1,0 +1,24 @@
+# Fox Den Midnight — still-image fallback for the same ReGreet CSS.
+# Copy to /etc/greetd/regreet.toml if video playback is unavailable.
+
+skip_selection = false
+
+[background]
+path = "/usr/share/backgrounds/foxden/foxden-greeter.jpg"
+fit = "Cover"
+
+[GTK]
+application_prefer_dark_theme = true
+theme_name = "Adwaita"
+font_name = "Monaspace Radon NF 16"
+cursor_blink = true
+
+[appearance]
+greeting_msg = "어서 와, Fox! 🦊"
+
+[widget.clock]
+format = "%A · %I:%M %p"
+resolution = "1s"
+timezone = "America/New_York"
+halign = "center"
+valign = "top"

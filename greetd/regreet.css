@@ -1,0 +1,169 @@
+/* Fox Den Midnight — ReGreet GTK4 theme
+ * Designed around the Seoul workshop video and DenKit v0.1 palette.
+ * Keep the authentication card centered: it avoids covering the fox on the
+ * right of the video, and remains usable on laptop-size displays.
+ */
+
+@define-color midnight #0B1423;
+@define-color slate #142335;
+@define-color mint #97E7CA;
+@define-color coral #F68D91;
+@define-color amber #F5AD66;
+@define-color cream #F7F5E9;
+@define-color border #36495D;
+@define-color muted #AFC0D1;
+@define-color critical #EF5261;
+
+window,
+picture {
+    background-color: @midnight;
+    color: @cream;
+}
+
+label,
+entry,
+passwordentry,
+button {
+    font-family: "Monaspace Radon NF", "LXGW WenKai Mono KR", sans-serif;
+}
+
+/* The main authentication frame floats over the animated workshop. */
+frame.background {
+    background-color: alpha(@midnight, 0.92);
+    border: 1px solid alpha(@mint, 0.58);
+    border-top: 3px solid @amber;
+    border-radius: 22px;
+    padding: 18px 24px;
+    color: @cream;
+    box-shadow: 0 18px 52px alpha(black, 0.65);
+}
+
+/* The greeting is the first direct label in ReGreet's login grid. */
+frame.background grid > label {
+    color: @muted;
+}
+
+frame.background grid > label:first-child {
+    color: @cream;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* ReGreet's separate top clock also carries the .background class. */
+frame.widget-clock {
+    background-color: alpha(@slate, 0.94);
+    border: 1px solid @border;
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    padding: 10px 24px;
+    box-shadow: 0 7px 24px alpha(black, 0.32);
+}
+
+frame.widget-clock label {
+    color: @mint;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+/* Inputs, user/session selectors, and password visibility control. */
+entry,
+passwordentry,
+combobox button {
+    background-image: none;
+    background-color: alpha(@slate, 0.98);
+    color: @cream;
+    border: 1px solid @border;
+    border-radius: 12px;
+    min-height: 36px;
+    padding: 6px 12px;
+    box-shadow: none;
+}
+
+combobox button label,
+entry text,
+passwordentry entry {
+    color: @cream;
+}
+
+entry:focus,
+passwordentry:focus,
+combobox button:focus {
+    border-color: @mint;
+    box-shadow: 0 0 0 2px alpha(@mint, 0.18);
+}
+
+/* Supporting actions and explicit keyboard focus. */
+button {
+    background-image: none;
+    background-color: @slate;
+    color: @cream;
+    border: 1px solid @border;
+    border-radius: 12px;
+    min-height: 32px;
+    padding: 7px 16px;
+    box-shadow: none;
+}
+
+button:hover {
+    background-color: @border;
+}
+
+button:focus {
+    border-color: @mint;
+}
+
+button.suggested-action,
+button.suggested-action:focus {
+    background-image: none;
+    background-color: @mint;
+    color: @midnight;
+    border-color: @mint;
+    font-weight: 700;
+}
+
+button.suggested-action label {
+    color: @midnight;
+}
+
+button.suggested-action:hover {
+    background-color: @amber;
+    border-color: @amber;
+}
+
+button.destructive-action {
+    background-image: none;
+    background-color: @slate;
+    color: @coral;
+    border-color: @coral;
+}
+
+button.destructive-action label {
+    color: @coral;
+}
+
+button.destructive-action:hover {
+    background-color: @coral;
+    color: @midnight;
+}
+
+button.destructive-action:hover label {
+    color: @midnight;
+}
+
+/* Drop-downs and login notifications should never revert to bright GTK gray. */
+popover contents,
+popover modelbutton {
+    background-color: @slate;
+    color: @cream;
+    border-color: @border;
+}
+
+infobar {
+    background-color: @slate;
+    color: @cream;
+    border-radius: 10px;
+}
+
+infobar.error {
+    border: 1px solid @critical;
+}
