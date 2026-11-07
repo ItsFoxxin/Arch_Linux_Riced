@@ -50,3 +50,9 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+
+# Hailuo login video is staged locally, never committed as a placeholder.
+greetd/assets/*.mp4
+greetd/assets/*.jpg
+greetd/assets/*.jpeg
+greetd/assets/*.png

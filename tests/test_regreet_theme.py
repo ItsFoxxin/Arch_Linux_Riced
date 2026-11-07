@@ -1,6 +1,7 @@
-"""Low-cost regression checks for the Fox Den ReGreet assets and settings."""
+"""Regression checks for the Fox Den Midnight login theme."""
 
 from pathlib import Path
+import subprocess
 import tomllib
 import unittest
 
@@ -28,15 +29,22 @@ class ReGreetThemeTests(unittest.TestCase):
         self.assertEqual(parsed[0]["background"]["path"], str(MEDIA_DIR / "foxden-greeter.mp4"))
         self.assertEqual(parsed[1]["background"]["path"], str(MEDIA_DIR / "foxden-greeter.jpg"))
 
-    def test_media_are_present_with_expected_signatures(self):
-        video = ROOT / "assets" / "foxden-greeter.mp4"
-        still = ROOT / "assets" / "foxden-greeter.jpg"
-        self.assertGreater(video.stat().st_size, 100_000)
-        self.assertGreater(still.stat().st_size, 50_000)
-        self.assertEqual(video.read_bytes()[4:8], b"ftyp")
-        self.assertEqual(still.read_bytes()[:2], b"\xff\xd8")
+    def test_local_media_workflow_is_documented_and_valid(self):
+        processor = ROOT / "process-login-video.sh"
+        staging = ROOT / "stage-assets.sh"
+        for script in (processor, staging):
+            with self.subTest(script=script.name):
+                self.assertTrue(script.is_file())
+                subprocess.run(["bash", "-n", str(script)], check=True)
+        processor_text = processor.read_text(encoding="utf-8")
+        staging_text = staging.read_text(encoding="utf-8")
+        self.assertIn("foxden_login_animated.mp4", processor_text)
+        self.assertIn("foxden_login_processed.mp4", staging_text)
+        self.assertIn("foxden-greeter.jpg", staging_text)
+        self.assertIn("-an", staging_text)
+        self.assertNotIn("greetd/assets/foxden-greeter.mp4", staging_text)
 
-    def test_theme_contains_the_shared_palette_and_focus_states(self):
+    def test_theme_contains_shared_palette_and_focus_states(self):
         css = (ROOT / "regreet.css").read_text(encoding="utf-8")
         for token in ("#0B1423", "#142335", "#97E7CA", "#F68D91", "#F5AD66", "#F7F5E9"):
             with self.subTest(token=token):

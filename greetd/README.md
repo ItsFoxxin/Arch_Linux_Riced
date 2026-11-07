@@ -1,123 +1,117 @@
 # Fox Den Midnight — animated ReGreet login screen
 
-This is the **login screen before Hyprland starts**, not the Hyprlock screen.
-The included silent, five-second Seoul workshop video is used directly by
-ReGreet's `[background]` setting. There is no separate wallpaper daemon, shell
-loop, or second compositor to keep running.
+This is the **pre-session greetd/ReGreet login screen**, not Hyprlock.
+It uses the Hailuo clip of the fox **walking into the Seoul homelab**, not the
+lock-screen animation. The ReGreet GTK4 theme uses the DenKit v0.1 palette,
+a midnight authentication card, a mint Eastern-time clock, and normal
+user/session selection. Password authentication still runs through greetd/PAM.
 
-The Fox Den Midnight palette follows DenKit v0.1. A nearly opaque midnight
-authentication card stays centered, with a mint login button, amber hover,
-coral power controls, and a mint Eastern-time clock above. The fox in the video
-remains visible on the right side of the screen. User and session selection
-remain enabled; greetd/PAM still handles authentication.
+## Source artwork policy
 
-## Files
+The source Hailuo animation and processed MP4 are **local assets**; they are
+not committed to this dotfiles repository. An earlier revision mistakenly
+included the lock-screen clip under `greetd/assets/`. That misleading video
+and matching still were removed. Local video files are ignored by Git.
 
-| File | Purpose |
-|---|---|
-| `regreet.toml` | Animated-video ReGreet configuration |
-| `regreet-static.toml` | Static fallback with identical login settings |
-| `regreet.css` | GTK4 login form, clock, input, button, and notification styling |
-| `assets/foxden-greeter.mp4` | Silent H.264/MP4 background (no audio playback) |
-| `assets/foxden-greeter.jpg` | Still background from the same scene |
-| `stage-assets.sh` | Stages your local video for the greeter user without changing the login configuration |
+Expected paths on the laptop:
+
+- Original: `~/Pictures/Wallpapers/FoxDen/foxden_login_animated.mp4`
+- Processed: `~/Pictures/Wallpapers/FoxDen/foxden_login_processed.mp4`
+- ReGreet's silent video: `/usr/share/backgrounds/foxden/foxden-greeter.mp4`
+- ReGreet's matching fallback: `/usr/share/backgrounds/foxden/foxden-greeter.jpg`
+
+There is no implicit `~` expansion in the TOML file. The installed media must
+be world-readable so the separate greeter account can access it.
 
 ## Prerequisites
 
-- An already working greetd + ReGreet login session (this package does **not**
-  replace your existing `/etc/greetd/config.toml` compositor/session command).
-- A ReGreet build with video background support and a working H.264 GStreamer
-  decoder. On Arch, check `pacman -Q greetd-regreet gstreamer gst-libav` first;
-  install missing packages through pacman if the video cannot decode.
-- `ffmpeg` for preparing the locally stored video without its audio track.
-- The `Monaspace Radon NF` and Korean fallback font used in the desktop. If the
-  font is unavailable to the **greeter** user, GTK will use its fallback font.
-- TTY access (Ctrl+Alt+F2/F3) or another reliable way to recover a broken
-  greeter **before** changing live system files.
+- An existing working greetd + ReGreet login session. Keep
+  `/etc/greetd/config.toml` and its compositor command unchanged.
+- `ffmpeg` (includes `ffprobe`) for processing the original video and creating
+  the static fallback.
+- A ReGreet build supporting video backgrounds and compatible GStreamer
+  decoders. On Arch Linux, install `gstreamer`, `gst-libav`,
+  `gst-plugins-base`, `gst-plugins-good` and `gst-plugins-bad` as needed.
+- Working TTY access (Ctrl+Alt+F2/F3) before changing live login files.
 
-Your source video stays at
-`~/Pictures/Wallpapers/FoxDen/foxden_login_animated.mp4` on the Arch laptop.
-Do not point ReGreet directly at `~/...`: TOML paths do not expand the shell's
-tilde, and the separate greeter account may not be able to traverse your home
-directory. We stage a silent copy under `/usr/share/backgrounds`, leaving the
-original unchanged.
+## 1. Process the *correct* login video
 
-## 1. Stage only the media, then preview safely
-
-From the root of a checkout of this branch:
+Save the Hailuo walking-into-the-homelab MP4 to the original path above.
+From the root of this repository, run:
 
 ```bash
-# Reads ~/Pictures/Wallpapers/FoxDen/foxden_login_animated.mp4 by default.
-# Pass greetd/assets/foxden-greeter.mp4 as an argument to use the bundled copy.
-bash greetd/stage-assets.sh
+bash greetd/process-login-video.sh
+```
 
-# This opens a test window in your existing desktop; it does not authenticate.
+The processor preserves the original. It produces a silent, 1920×1080,
+24-FPS H.264 video with full-bleed cropping, adjustable right-biased crop,
+and a short end-to-start fade. Override the source/output paths if needed:
+
+```bash
+bash greetd/process-login-video.sh /path/to/login-original.mp4 /path/to/login-processed.mp4
+```
+
+The crop and loop can be tuned with `FOX_CROP_BIAS` (0 = left, 1 = right)
+and `FOX_LOOP_BLEND_SECONDS` (default 0.70). Keep the fox visible to the
+right of the login card, and check the seam after a few loops.
+
+## 2. Stage media and preview without logging out
+
+```bash
+bash greetd/stage-assets.sh
 regreet --demo --config "$PWD/greetd/regreet.toml" --style "$PWD/greetd/regreet.css"
 ```
 
-The demo can differ slightly from the actual greeter due to the desktop's GTK
-theme. Use GTK Inspector if necessary to investigate CSS selectors. Test on the
-laptop display and any external monitor layouts you commonly use.
+The staging script reads `foxden_login_processed.mp4` by default. It copies a
+silent MP4 and generates the fallback JPG **from the same video** under
+`/usr/share/backgrounds/foxden/`. It does not modify the active greeter
+configuration. To stage a different processed file, pass its full path as
+an argument.
 
-For a still-image preview, change only the config path:
+To isolate a video-decoder failure, test the matching still:
 
 ```bash
 regreet --demo --config "$PWD/greetd/regreet-static.toml" --style "$PWD/greetd/regreet.css"
 ```
 
-If the video is black/blank but the JPG loads, check ReGreet/GStreamer versions
-and decoder availability. The MP4 is H.264 with the sound track removed. You
-can verify the asset with `ffprobe greetd/assets/foxden-greeter.mp4` or
-`gst-discoverer-1.0 /usr/share/backgrounds/foxden/foxden-greeter.mp4` if those
-utilities are installed.
+If the image renders but the video doesn't, check the installed GStreamer
+plugins using `gst-inspect-1.0 avdec_h264` and inspect the video with
+`ffprobe /usr/share/backgrounds/foxden/foxden-greeter.mp4`.
 
-## 2. Activate when you're ready (optional)
+## 3. Activate after the demo works
 
-After the demo works **and** you have confirmed that a TTY login works, back up
-the current configuration. Skip the backup command only if that file does not
-exist yet.
+After confirming a working TTY login, back up any existing files, then install:
 
 ```bash
-sudo cp -a /etc/greetd/regreet.toml "/etc/greetd/regreet.toml.$(date +%Y%m%d-%H%M%S).bak"
-sudo cp -a /etc/greetd/regreet.css "/etc/greetd/regreet.css.$(date +%Y%m%d-%H%M%S).bak"
-
+for file in regreet.toml regreet.css; do
+  if [[ -f "/etc/greetd/$file" ]]; then
+    sudo cp -a "/etc/greetd/$file" "/etc/greetd/$file.$(date +%Y%m%d-%H%M%S).bak"
+  fi
+done
 sudo install -m 0644 greetd/regreet.toml /etc/greetd/regreet.toml
 sudo install -m 0644 greetd/regreet.css /etc/greetd/regreet.css
 ```
 
-If your existing greetd launch command explicitly specifies `regreet --config`
-or `--style`, update those paths instead; this package deliberately does not
-guess at or replace the display manager's startup command. Do not restart
-`greetd` from your active desktop session. After saving your work, log out to
-see the boot greeter, or test during a planned reboot with TTY recovery ready.
+If your greeter launch command uses explicit `--config` or `--style` paths,
+check that it points to the installed files. Don't restart `greetd` from your
+active Hyprland session. Log out or reboot only after saving work and checking
+TTY recovery.
 
-## 3. Fallback and rollback
+## Fallback and rollback
 
-If video playback is unsupported but ReGreet still opens:
+If video playback fails but ReGreet still works, activate the still-image
+configuration:
 
 ```bash
 sudo install -m 0644 greetd/regreet-static.toml /etc/greetd/regreet.toml
 ```
 
-If the greeter does not start, switch to a TTY, log in, and restore your
-timestamped copies of `regreet.toml` and `regreet.css` from `/etc/greetd/`.
-The earlier `/etc/greetd/config.toml` was intentionally left untouched, so the
-existing greetd recovery path still applies. Avoid enabling autologin or
-relaxing PAM file permissions to debug an artwork or video issue.
+If the greeter fails, switch to TTY, log in, and restore the timestamped
+copies in `/etc/greetd/`. Do not enable autologin or weaken PAM to troubleshoot
+an artwork problem. These are system files; do not `stow greetd` into `$HOME`.
 
-## Notes
+## References
 
-- `fit = "Cover"` intentionally fills wide and standard laptop screens;
-  cropping is expected at the edges on monitors with a different aspect ratio.
-- The original video contained audio. This packaged copy has none, so a login
-  screen will never unexpectedly play sound.
-- The clock uses `America/New_York`, matching the desktop's existing setting.
-- These are **system** configuration files, not GNU Stow home dotfiles. Do not
-  run `stow greetd` into your home directory.
-- The video contains Hailuo/Minimax branding embedded by the creator. Artwork
-  is included in this personal theme only; check the generation service's
-  license before redistributing it beyond your own setup.
-
-Sources: [ReGreet configuration and video support](https://github.com/rharish101/ReGreet/blob/main/regreet.sample.toml),
-[ReGreet custom CSS and demo mode](https://github.com/rharish101/ReGreet#custom-css),
-and [ArchWiki greetd](https://wiki.archlinux.org/title/Greetd).
+- [ReGreet sample configuration](https://github.com/rharish101/ReGreet/blob/main/regreet.sample.toml)
+- [ReGreet README](https://github.com/rharish101/ReGreet)
+- [ArchWiki greetd](https://wiki.archlinux.org/title/Greetd)

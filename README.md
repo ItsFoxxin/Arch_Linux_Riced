@@ -70,13 +70,13 @@ The lock screen includes the Korean phrase **시작이 반이다** — "Well beg
 
 ### Fox Den Login Screen (ReGreet)
 
-The optional **pre-session login screen** lives in [`greetd/`](greetd/README.md)
-and uses a short, silent video of the fox working in a midnight Seoul server
-workshop. ReGreet renders the video background directly through GStreamer;
-no separate wallpaper service is needed. It retains the working greetd/PAM
-login flow, user/session selectors, and a still-image fallback. Its system
-files are installed separately from the GNU Stow home dotfiles, after a safe
-`regreet --demo` preview.
+The optional **pre-session login screen** lives in [`greetd/`](greetd/README.md).
+It uses a **locally supplied Hailuo animation of the fox entering the Seoul
+homelab**; the animation is not bundled with the dotfiles. The included
+processing and staging scripts create a silent, loop-smoothed MP4 and a matching
+static fallback for ReGreet. The normal greetd/PAM authentication flow and
+user/session selectors remain unchanged. Preview with `regreet --demo` before
+installing the system configuration; these files are not GNU Stow home dotfiles.
 
 ### Kitty Terminal
 
