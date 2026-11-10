@@ -19,8 +19,8 @@ The visual identity, **Fox Den Midnight (DenKit v0.1)**, uses soft coral, mint, 
 - Custom window borders, blur, shadows, and animations
 - Keyboard-driven tiling and workspace navigation
 - Touchpad gestures and multimedia keybindings
-- Workspace-specific behavior, including Spotify Player on workspace 2
-- Hyprpaper wallpaper configuration
+- Workspace-specific behavior, including an attempt to launch Spotify Player in Kitty when an empty workspace 2 is created
+- Hyprpaper static wallpaper configuration; session autostart also invokes `mpvpaper` with a local animation on the machine-specific `eDP-1` display
 
 ### Fox Den Waybar
 
@@ -43,17 +43,18 @@ Fox Den includes custom Bash scripts and Rofi themes for desktop interaction.
 
 **Application Launcher**
 
-A themed launcher accessible through the Super key.
+A themed Rofi launcher opened by releasing the Super key or clicking **Fox Den** in Waybar. It offers applications, windows, a terminal, Quick Controls, and power/session actions.
 
 **Quick Controls**
 
-Accessible with `Super + S`, providing controls for:
+Opened with `Super + Alt + S`, the launcher menu, or the Waybar controls button. Available actions depend on installed utilities and hardware:
 
-- Audio volume and mute
-- Display brightness
-- Bluetooth power and management
-- Power profile information
+- Audio volume, mute, and sound settings (`wpctl`, optional `pavucontrol`)
+- Display brightness (`brightnessctl`; requires a supported backlight)
+- Bluetooth power and management (`bluetoothctl`, optional Blueman)
+- Viewing and changing power profiles (`powerprofilesctl`, when available)
 - Stay Awake mode using `systemd-inhibit`
+- Audio and NetworkManager settings, when the respective tools are installed
 
 ### Fox Den Lock Screen
 
@@ -65,6 +66,8 @@ A customized Hyprlock configuration featuring:
 - Animated password entry
 - Custom colors, typography, and visual effects
 - PAM-based authentication
+
+The standard `hyprlock.conf` uses tracked still images, an opinionated 1920×1080 layout, and absolute `/home/foxxin` asset paths that other machines must adapt. The separate `hyprlock-animated.conf` and preview helper are **optional testing resources**, not the default lock action. The animated preview requires a local MP4, `mpvpaper`, `jq`, one `eDP-1` display, and specific session-lock precautions; see [Animated Hyprlock preview and recovery](docs/ANIMATED_HYPRLOCK_PREVIEW.md).
 
 The lock screen includes the Korean phrase **시작이 반이다** — "Well begun is half done."
 
@@ -122,7 +125,8 @@ A custom two-line Starship shell prompt provides:
 | Status Bar | Waybar |
 | Lock Screen | Hyprlock |
 | Login Screen | greetd + ReGreet (optional) |
-| Wallpaper | Hyprpaper |
+| Wallpaper | Hyprpaper; machine-specific `mpvpaper` autostart |
+| Screenshots and Recording | `hyprshot`, `grim`, `slurp`, `satty`, `wf-recorder` (optional external tools) |
 | Terminal | Kitty |
 | Shell | Bash |
 | Prompt | Starship |
@@ -130,50 +134,101 @@ A custom two-line Starship shell prompt provides:
 | Notifications | SwayNC |
 | Music | Spotify Player |
 | Input Method | Fcitx5 |
-| Dotfile Management | GNU Stow |
+| Dotfile Management | GNU Stow (seven home packages) |
+| Optional User Service | Proton Pass SSH agent (`systemd/`, separately managed) |
 | Automation | GitHub Actions |
 | Testing | Python, ShellCheck, Lua |
 
 ## Repository Structure
 
+Tracked `dev` files (directories are abbreviated only where indicated):
+
 ```text
 Arch_Linux_Riced/
+├── .gitattributes
+├── .gitignore
 ├── .github/
-│   ├── workflows/
-│   │   └── ci.yml
-│   └── dependabot.yml
-├── bash/
-├── hypr/
-│   └── .config/hypr/
-├── greetd/
-│   ├── assets/
-│   ├── stage-assets.sh
-│   ├── regreet.toml
+│   ├── dependabot.yml
+│   └── workflows/ci.yml
+├── bash/                                 # Stow
+│   ├── .bash_profile
+│   └── .bashrc
+├── ci/
+│   ├── stow_smoke.py
+│   └── validate.py
+├── docs/
+│   └── ANIMATED_HYPRLOCK_PREVIEW.md
+├── greetd/                               # Separate system-level setup
+│   ├── README.md
+│   ├── process-login-video.sh
 │   ├── regreet-static.toml
 │   ├── regreet.css
-│   └── README.md
-├── kitty/
-│   └── .config/kitty/
-├── spotify-player/
-│   └── .config/spotify-player/
-├── starship/
-│   └── .config/
-├── swaync/
-│   └── .config/swaync/
-├── waybar/
-│   └── .config/waybar/
+│   ├── regreet.toml
+│   └── stage-assets.sh
+├── hypr/                                 # Stow
+│   └── .config/hypr/
+│       ├── assets/hyprlock/
+│       │   ├── fox-den-lock-bg.png
+│       │   └── fox-den-logo.png
+│       ├── foxden/autostart.lua
+│       ├── hyprland.lua
+│       ├── hyprlock-animated.conf
+│       ├── hyprlock.conf
+│       ├── hyprpaper.conf
 │       └── scripts/
-├── ci/
-│   ├── validate.py
-│   └── stow_smoke.py
+│           ├── foxden-lock-animated-test.sh
+│           └── foxden-record-toggle.sh
+├── kitty/                                # Stow
+│   └── .config/kitty/kitty.conf
+├── spotify-player/                       # Stow
+│   └── .config/spotify-player/
+│       ├── app.toml
+│       └── theme.toml
+├── starship/                             # Stow
+│   └── .config/starship.toml
+├── swaync/                               # Stow
+│   └── .config/swaync/
+│       ├── config.json
+│       └── style.css
+├── systemd/                              # Separate optional user service
+│   └── .config/systemd/user/proton-pass-ssh-agent.service
 ├── tests/
-│   └── test_network_sparkline.py
+│   ├── test_network_sparkline.py
+│   └── test_regreet_theme.py
+├── waybar/                               # Stow
+│   └── .config/waybar/
+│       ├── config.jsonc
+│       ├── foxden-launcher.rasi
+│       ├── foxden-midnight.rasi
+│       ├── quick-controls.rasi
+│       ├── scripts/
+│       │   ├── foxden-launcher.sh
+│       │   ├── input-method.sh
+│       │   ├── network-sparkline.py
+│       │   └── quick-controls.sh
+│       └── style.css
 └── README.md
 ```
 
-The seven dotfile packages are organized for deployment with GNU Stow.
-The `greetd/` directory is an additional system-level theme package and is not
-included in a home-directory Stow installation.
+### Deployment and packaging inventory
+
+The **seven GNU Stow home packages**, as listed in `ci/stow_smoke.py`, are:
+
+| Stow package | Target in `$HOME` |
+|---|---|
+| `bash/` | `.bashrc`, `.bash_profile` |
+| `hypr/` | `.config/hypr/` |
+| `kitty/` | `.config/kitty/` |
+| `spotify-player/` | `.config/spotify-player/` |
+| `starship/` | `.config/starship.toml` |
+| `swaync/` | `.config/swaync/` |
+| `waybar/` | `.config/waybar/` |
+
+`greetd/` is **not** a Stow home package. It contains a separately installed system login theme, media-preparation scripts, and the [ReGreet setup and rollback guide](greetd/README.md). The login MP4/JPG are generated from locally supplied video and are not tracked.
+
+`systemd/` contains an **optional, separately managed** Proton Pass SSH-agent user unit. The file is tracked, but neither the Stow command nor CI installs or enables it; it requires a local Proton Pass CLI setup and intentional user-service management.
+
+The CI archive includes `bash/`, `greetd/`, `hypr/`, `kitty/`, `spotify-player/`, `starship/`, `swaync/`, `waybar/`, and `README.md`. **It does not include `systemd/`, `ci/`, `docs/`, `tests/`, or `.github/`.** This archive inventory differs from the seven-package Stow deployment inventory.
 
 ## Fox Den Midnight — DenKit v0.1
 
@@ -259,7 +314,7 @@ palette consistency checks.
 
 **Warning:** These configurations are tailored to my personal Arch Linux environment. They are not a complete Arch installation script or a universal desktop installer.
 
-Some settings depend on installed applications, fonts, hardware, and local paths.
+Some settings depend on installed applications, fonts, hardware, and local paths. In particular, the Hyprland Lua configuration requires a compatible Lua-enabled Hyprland setup; the repository does not install or validate the compositor at runtime.
 
 ### 1. Clone the repository
 
@@ -281,7 +336,7 @@ Install and configure the required desktop applications and dependencies separat
 
 ### 3. Deploy configuration packages
 
-Review existing configuration files and back them up before continuing.
+Review existing configuration files and back them up before continuing. Run the Stow `--simulate` preview shown above before making changes to your home directory. Only the seven packages listed below are deployed; do not add `greetd` or `systemd` to this command.
 
 From the repository root:
 
@@ -303,27 +358,45 @@ Before using the desktop configuration, check:
 - Installed fonts and icon fonts
 - Monitor and hardware settings
 - Application availability
-- Local file paths, particularly Hyprlock assets
-- Fcitx5 and Korean font support
+- Local file paths: `hyprlock.conf` image paths and `hyprpaper.conf` wallpaper path use `/home/foxxin`
+- Display assumptions: static Hyprlock layout targets 1920×1080; Hyprpaper and animated wallpaper autostart target `eDP-1`
+- Locally supplied video files for the optional animated lock preview and ReGreet login screen (not committed)
+- Fcitx5 and Korean font support (`Monaspace Radon NF` and `LXGW WenKai Mono KR` are referenced)
+- External applications for optional capture workflows (`hyprshot`, `grim`, `slurp`, `satty`, `wf-recorder`); recordings are saved under `~/Videos/Captures` without audio by default
+- Spotify Player availability and its separate authentication requirements for the optional workspace-2 TUI
 
-The Hyprlock configuration currently contains absolute paths under `/home/foxxin`, which must be adjusted for other usernames.
+Neither the [ReGreet system-login configuration](greetd/README.md) nor the `systemd/` user unit is automatically installed by these Stow commands. Review them independently; do not deploy either as part of a home-dotfile Stow operation.
 
 ## Keyboard Shortcuts
 
+These are the bindings defined in [`hypr/.config/hypr/hyprland.lua`](hypr/.config/hypr/hyprland.lua), not a guarantee that optional commands are installed on another machine.
+
 | Shortcut | Action |
 |---|---|
-| Super | Fox Den launcher |
-| Super + S | Quick Controls |
-| Super + Q | Kitty terminal |
-| Super + E | Dolphin file manager |
-| Super + R | Hyprlauncher |
+| Super (release) | Open Fox Den Rofi launcher |
+| Super + Alt + S | Open Quick Controls |
+| Super + S | Toggle `magic` special workspace (scratchpad) |
+| Super + Alt + Shift + S | Move active window to `special:magic` |
+| Super + Q | Open Kitty terminal |
+| Super + E | Open Dolphin file manager |
+| Super + R | Launch Hyprlauncher |
 | Super + C | Close active window |
 | Super + V | Toggle floating window |
-| Super + 1–0 | Switch workspaces |
-| Super + Shift + 1–0 | Move window to workspace |
-| Super + Arrow | Change window focus |
+| Super + M | Run Hyprshutdown if available, otherwise Hyprland exit dispatch |
+| Super + P | Toggle pseudotile |
+| Super + J | Toggle Dwindle split |
+| Super + 1–0 | Switch to workspaces 1–10 (`0` means 10) |
+| Super + Shift + 1–0 | Move active window to workspaces 1–10 |
+| Super + Arrow | Change focused window |
+| Super + mouse wheel | Step through workspaces |
+| Super + left/right mouse drag | Move/resize window |
+| Super + Shift + S | Screenshot selected region to clipboard (`hyprshot`) |
+| Print | Screenshot selected monitor to clipboard (`hyprshot`) |
+| Super + Print | Screenshot selected window to clipboard (`hyprshot`) |
+| Super + Shift + A | Capture and annotate a selected region with `grim`, `slurp`, and `satty` |
+| Super + Shift + R | Start/stop region recording (`wf-recorder`, no audio by default) |
 
-**Configuration note:** The current Hyprland Lua file also assigns `Super + S` to a special workspace. This duplicate binding should be resolved.
+Three-finger horizontal gestures switch workspaces. Hardware multimedia keys control volume, brightness and playback when the necessary utilities are available. The `Super + S` special-workspace binding **does not** conflict with the `Super + Alt + S` Quick Controls binding.
 
 ## Development Workflow
 
@@ -365,13 +438,13 @@ The pipeline has three stages:
 
 **2. Tests**
 
-- Network sparkline regression tests
+- Network sparkline and ReGreet theme regression tests (`tests/test_network_sparkline.py`, `tests/test_regreet_theme.py`)
 - GNU Stow installation, restow, and removal checks
 - Verification that deployed links resolve to the correct source files
 
 **3. Packaging**
 
-- Archive the tested dotfile packages
+- Archive the seven home-dotfile packages **plus `greetd/` and `README.md`** (not the separately managed `systemd/` unit)
 - Preserve hidden files and executable permissions
 - Generate a SHA-256 checksum
 - Upload the archive as a GitHub Actions artifact
@@ -382,7 +455,7 @@ CI does not deploy changes to the local machine or automatically publish release
 
 ### Run Checks Locally
 
-Install Python 3.11+, python-json5, ShellCheck, Lua, and GNU Stow.
+Install Python 3.11+, `json5` for Python (CI pins `json5==0.12.1`), ShellCheck, Lua 5.4, and GNU Stow. The commands below validate repository sources without touching desktop session settings.
 
 ```bash
 python ci/validate.py
@@ -398,14 +471,16 @@ Additional syntax checks:
 bash -n bash/.bashrc
 bash -n bash/.bash_profile
 
-find waybar -name '*.sh' \
-  -exec bash -n {} \;
+shellcheck --shell=bash --severity=error bash/.bashrc bash/.bash_profile
 
-find waybar -name '*.sh' \
-  -exec shellcheck --severity=error {} \;
+while IFS= read -r -d '' file; do
+  bash -n "$file"
+  shellcheck --severity=error "$file"
+done < <(git ls-files -z '*.sh')
 
-find hypr -name '*.lua' \
-  -exec luac -p {} \;
+while IFS= read -r -d '' file; do
+  luac -p "$file"
+done < <(git ls-files -z '*.lua')
 ```
 
 These checks do not replace testing within a running Arch Linux and Hyprland session.
@@ -414,7 +489,7 @@ These checks do not replace testing within a running Arch Linux and Hyprland ses
 
 Potential future improvements:
 
-- [ ] Resolve duplicate keyboard bindings
+- [ ] Add automated drift checks for the documented keyboard shortcuts
 - [ ] Remove hardcoded user-specific paths
 - [ ] Document all runtime dependencies
 - [ ] Add desktop screenshots
