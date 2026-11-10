@@ -336,7 +336,7 @@ Install and configure the required desktop applications and dependencies separat
 
 ### 3. Deploy configuration packages
 
-Review existing configuration files and back them up before continuing. Run the Stow `--simulate` preview shown above before making changes to your home directory. Only the seven packages listed below are deployed; do not add `greetd` or `systemd` to this command.
+Review existing configuration files and back them up before continuing. Run the Stow `--simulate` preview shown above before making changes to your home directory. Only the seven packages listed in the deployment inventory above are deployed; do not add `greetd` or `systemd` to this command.
 
 From the repository root:
 
