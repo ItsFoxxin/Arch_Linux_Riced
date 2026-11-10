@@ -30,7 +30,7 @@ Source: `hypr/.config/hypr/hyprland.lua`, with `require("foxden/autostart")` at 
 | Super + Shift + R | Toggle `foxden-record-toggle.sh` region video capture |
 | Audio/media/brightness keys | `wpctl`, `playerctl`, `brightnessctl` where applicable |
 
-There is **no duplicate Super + S Quick Controls binding** in the current Lua file. Do not follow the stale binding warning in the root README until Worker #5 corrects it.
+For the authoritative shortcut definitions, inspect `hypr/.config/hypr/hyprland.lua` directly. The Lua bindings distinguish **Super + Alt + S** (Quick Controls) from **Super + S** (the special workspace).
 
 The recording script requires `XDG_RUNTIME_DIR`, uses an exclusive lock and PID/start-time validation, stores state and logs below `$XDG_RUNTIME_DIR/foxden-capture`, and writes silent MP4 files in `~/Videos/Captures`. It starts on a region selection and stops/finalizes on the next toggle; do not terminate `wf-recorder` indiscriminately while finalizing. These are not tracked assets.
 
