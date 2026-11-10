@@ -11,6 +11,6 @@ These documents describe **tracked configuration on `dev`**, with an explicit di
 | [Animated Hyprlock preview](ANIMATED_HYPRLOCK_PREVIEW.md) | Current `dev` preview, no obsolete feature branch; single-monitor/xray safety; cleanup |
 | [CI vs live runtime verification](VALIDATION_RUNTIME_CHECKLIST.md) | Existing CI capabilities, local static commands and owner-only acceptance checklist |
 
-**Ownership boundaries:** `README.md` is handled separately by Issue #5; the current documentation PR touches `docs/` only. `greetd/` is a system-level configuration and media workflow, `systemd/` is a separately managed optional unit, and neither is installed as part of the seven Stow home packages.
+**Documentation roles:** The root `README.md` is the project overview and entry point. The focused `docs/` guides provide source-verified installation prerequisites, component details, maintenance procedures, manual verification and recovery. The `greetd/` tree is a separately managed system-level theme and media workflow; `systemd/` contains a separately managed optional user unit. Neither is installed by the seven-package home Stow command.
 
-No command in these guides has been run against the user's workstation as part of the documentation change. Configuration changes, installs, runtime previews, service activation, production greeter deployment and merges require separate owner action.
+**Runtime boundary:** These guides describe operator procedures, not completed workstation tests. Applying configurations, installing packages, running previews, enabling services or activating a production greeter requires a separate, deliberate owner action. Static validation and CI do not establish live desktop or authentication behavior.
