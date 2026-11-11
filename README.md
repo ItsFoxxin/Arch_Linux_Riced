@@ -10,6 +10,21 @@ The visual identity, **Fox Den Midnight (DenKit v0.1)**, uses soft coral, mint, 
 
 > **Project status:** Active development. The `dev` branch contains ongoing changes, while `main` is intended for reviewed updates.
 
+## Documentation and Recovery
+
+**Start with the [technical documentation index](docs/INDEX.md)** for source-verified setup, desktop configuration, maintenance, safety boundaries and recovery. These guides describe tracked files and operator procedures; they do **not** prove successful live desktop, login or lock-screen behavior.
+
+| Guide | Scope |
+|---|---|
+| [Installation prerequisites and dependencies](docs/INSTALLATION_DEPENDENCIES.md) | Runtime tools, optional components, fonts, paths and monitor assumptions |
+| [GNU Stow deployment and rollback](docs/STOW_DEPLOYMENT_RECOVERY.md) | Seven-package deployment, backup, conflict handling and recovery |
+| [Desktop configuration](docs/DESKTOP_CONFIGURATION.md) | Hyprland Lua, autostart, shortcuts, Waybar, Rofi, Kitty, shell and media |
+| [Greeter, wallpaper and service recovery](docs/GREETER_WALLPAPER_RECOVERY.md) | Static lock, local media, ReGreet/PAM, TTY recovery and optional SSH agent |
+| [Animated Hyprlock preview](docs/ANIMATED_HYPRLOCK_PREVIEW.md) | Isolated, non-production animation test and xray cleanup precautions |
+| [CI and manual runtime verification](docs/VALIDATION_RUNTIME_CHECKLIST.md) | Automated checks versus owner-executed workstation acceptance |
+
+**Deployment boundary:** Nothing in the repository automatically installs dependencies, applies Stow links, activates ReGreet, enables the optional SSH-agent service or verifies a live Arch session.
+
 ## Features
 
 ### Desktop and Window Management
@@ -77,9 +92,12 @@ The optional **pre-session login screen** lives in [`greetd/`](greetd/README.md)
 It uses a **locally supplied Hailuo animation of the fox entering the Seoul
 homelab**; the animation is not bundled with the dotfiles. The included
 processing and staging scripts create a silent, loop-smoothed MP4 and a matching
-static fallback for ReGreet. The normal greetd/PAM authentication flow and
-user/session selectors remain unchanged. Preview with `regreet --demo` before
-installing the system configuration; these files are not GNU Stow home dotfiles.
+static fallback for ReGreet. **Staging the media writes to
+`/usr/share/backgrounds/foxden/` using `sudo`; it is not a read-only preview.**
+The normal greetd/PAM authentication flow and user/session selectors remain
+unchanged. Preview with `regreet --demo` before installing the separately
+managed system configuration, and retain a working TTY rollback path; these
+files are not GNU Stow home dotfiles.
 
 ### Kitty Terminal
 
@@ -157,7 +175,13 @@ Arch_Linux_Riced/
 │   ├── stow_smoke.py
 │   └── validate.py
 ├── docs/
-│   └── ANIMATED_HYPRLOCK_PREVIEW.md
+│   ├── ANIMATED_HYPRLOCK_PREVIEW.md
+│   ├── DESKTOP_CONFIGURATION.md
+│   ├── GREETER_WALLPAPER_RECOVERY.md
+│   ├── INDEX.md
+│   ├── INSTALLATION_DEPENDENCIES.md
+│   ├── STOW_DEPLOYMENT_RECOVERY.md
+│   └── VALIDATION_RUNTIME_CHECKLIST.md
 ├── greetd/                               # Separate system-level setup
 │   ├── README.md
 │   ├── process-login-video.sh
@@ -332,11 +356,11 @@ cd Arch_Linux_Riced
 sudo pacman -S stow
 ```
 
-Install and configure the required desktop applications and dependencies separately.
+Install and configure the required desktop applications and dependencies separately; see the [source-based dependency inventory](docs/INSTALLATION_DEPENDENCIES.md). A successful Stow operation does not install those binaries, fonts, codecs, input-method engines or local wallpaper assets.
 
 ### 3. Deploy configuration packages
 
-Review existing configuration files and back them up before continuing. Run the Stow `--simulate` preview shown above before making changes to your home directory. Only the seven packages listed in the deployment inventory above are deployed; do not add `greetd` or `systemd` to this command.
+**Manual, owner-controlled step:** first follow the [Stow preflight and recovery guide](docs/STOW_DEPLOYMENT_RECOVERY.md). Preserve current configurations and a working TTY login; inspect and back up conflicting files, particularly `.bashrc` and `.bash_profile`. Run the Stow `--simulate` preview shown above before making changes to your home directory. Resolve every unexpected conflict individually; **do not use `stow --adopt` on unknown files**. Only the seven packages listed in the deployment inventory above are deployed; do not add `greetd` or `systemd` to this command.
 
 From the repository root:
 
@@ -348,7 +372,7 @@ stow -t "$HOME" \
 
 Stow creates symbolic links into the target home directory.
 
-Existing conflicting files may prevent deployment. Do not overwrite them without reviewing their contents.
+Existing conflicting files may prevent deployment. Do not overwrite them without reviewing their contents. For an owner-directed rollback, review the [simulated Stow deletion, actual unstow and path-specific restoration procedure](docs/STOW_DEPLOYMENT_RECOVERY.md); greeter recovery is a separate system-level process.
 
 ### 4. Review local configuration
 
@@ -364,8 +388,10 @@ Before using the desktop configuration, check:
 - Fcitx5 and Korean font support (`Monaspace Radon NF` and `LXGW WenKai Mono KR` are referenced)
 - External applications for optional capture workflows (`hyprshot`, `grim`, `slurp`, `satty`, `wf-recorder`); recordings are saved under `~/Videos/Captures` without audio by default
 - Spotify Player availability and its separate authentication requirements for the optional workspace-2 TUI
+- Login-shell behavior: `bash/.bash_profile` may run `start-hyprland` on TTY1 when the executable exists and no graphical/SSH session is detected
+- SSH-agent behavior: the Stow-managed `.bashrc` sets `SSH_AUTH_SOCK` to `~/.ssh/proton-pass-agent.sock` unconditionally, even if the separately managed Proton Pass service is not installed or running
 
-Neither the [ReGreet system-login configuration](greetd/README.md) nor the `systemd/` user unit is automatically installed by these Stow commands. Review them independently; do not deploy either as part of a home-dotfile Stow operation.
+Neither the [ReGreet system-login configuration](greetd/README.md) nor the `systemd/` user unit is automatically installed by these Stow commands. Review them independently; do not deploy either as part of a home-dotfile Stow operation. For lock/login issues, follow [greeter and wallpaper recovery](docs/GREETER_WALLPAPER_RECOVERY.md); avoid force-killing a locked authenticator, restarting greetd in an active session or treating ReGreet as a Stow rollback.
 
 ## Keyboard Shortcuts
 
@@ -483,7 +509,7 @@ while IFS= read -r -d '' file; do
 done < <(git ls-files -z '*.lua')
 ```
 
-These checks do not replace testing within a running Arch Linux and Hyprland session.
+These checks do not replace testing within a running Arch Linux and Hyprland session. The [CI-versus-runtime checklist](docs/VALIDATION_RUNTIME_CHECKLIST.md) distinguishes checks exercised by GitHub Actions from manual tests of monitors, fonts, shell startup, Rofi, screen capture, static/animated locks, ReGreet and optional services.
 
 ## Roadmap
 
@@ -491,7 +517,7 @@ Potential future improvements:
 
 - [ ] Add automated drift checks for the documented keyboard shortcuts
 - [ ] Remove hardcoded user-specific paths
-- [ ] Document all runtime dependencies
+- [ ] Keep runtime dependency documentation current as features evolve
 - [ ] Add desktop screenshots
 - [ ] Improve installation and restoration instructions
 - [ ] Expand automated tests
