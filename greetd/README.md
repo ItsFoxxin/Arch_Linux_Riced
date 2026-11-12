@@ -81,7 +81,10 @@ plugins using `gst-inspect-1.0 avdec_h264` and inspect the video with
 ### Issue #13 — CSS-only login-card layout preview (not live activation)
 
 The login frame is left-shifted using a `30%` right margin, scoped to
-`frame.background:not(.widget-clock)`, so the top clock remains centered.
+`overlay > frame.background:nth-child(2)`, so the top clock remains centered.
+ReGreet 0.5.0 has no `.widget-clock` class on its clock frame; the overlay
+child order (background, login frame, clock frame) is shared with current
+upstream and avoids relying on that newer class.
 Horizontal card padding is reduced from 24 to 14 CSS pixels. ReGreet's
 GTK4 template still requests a **500px-wide grid** for the user/session/password
 controls. This intentionally preserves usable input widths, but means the card
