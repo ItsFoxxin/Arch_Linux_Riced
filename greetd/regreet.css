@@ -1,7 +1,6 @@
 /* Fox Den Midnight — ReGreet GTK4 theme
  * Designed around the Seoul workshop video and DenKit v0.1 palette.
- * Keep the authentication card centered: it avoids covering the fox on the
- * right of the video, and remains usable on laptop-size displays.
+ * Keep the login card left of the fox; the separate clock stays centered.
  */
 
 @define-color midnight #0B1423;
@@ -36,6 +35,18 @@ frame.background {
     padding: 18px 24px;
     color: @cream;
     box-shadow: 0 18px 52px alpha(black, 0.65);
+}
+
+/* ReGreet places the Picture first, login Frame second and clock Frame third
+ * in its GtkOverlay (including 0.5.0, which lacks the .widget-clock class).
+ * Target the second direct child so only login shifts, not the top clock.
+ * A percentage margin reserves fox artwork on the right in either media mode.
+ * The inner grid requests 500px; padding can shrink the surrounding frame,
+ * but CSS cannot remove that minimum or guarantee narrow-screen fit.
+ */
+overlay > frame.background:nth-child(2) {
+    margin-right: 30%;
+    padding: 16px 14px;
 }
 
 /* The greeting is the first direct label in ReGreet's login grid. */

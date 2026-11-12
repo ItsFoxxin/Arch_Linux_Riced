@@ -1,6 +1,7 @@
 """Regression checks for the Fox Den Midnight login theme."""
 
 from pathlib import Path
+import re
 import subprocess
 import tomllib
 import unittest
@@ -43,6 +44,24 @@ class ReGreetThemeTests(unittest.TestCase):
         self.assertIn("foxden-greeter.jpg", staging_text)
         self.assertIn("-an", staging_text)
         self.assertNotIn("greetd/assets/foxden-greeter.mp4", staging_text)
+
+    def test_login_panel_layout_is_left_shifted_without_changing_clock(self):
+        css = (ROOT / "regreet.css").read_text(encoding="utf-8")
+        login = re.search(
+            r"(?m)^overlay\s*>\s*frame\.background:nth-child\(2\)\s*\{([^{}]*)\}", css
+        )
+        self.assertIsNotNone(login, "Only the second GtkOverlay child should move")
+        # ReGreet 0.5.0's clock has no .widget-clock class, so excluding
+        # that class alone would inadvertently move the clock too.
+        self.assertNotIn("frame.background:not(.widget-clock)", css)
+        rules = login.group(1)
+        shift = re.search(r"\bmargin-right:\s*(\d+(?:\.\d+)?)%;", rules)
+        self.assertIsNotNone(shift, "Use a viewport-relative right margin")
+        self.assertGreaterEqual(float(shift.group(1)), 20)
+        self.assertLessEqual(float(shift.group(1)), 35)
+        self.assertRegex(rules, r"\bpadding:\s*16px\s+14px\s*;")
+        self.assertNotRegex(rules, r"\bmin-width\s*:")
+        self.assertIsNotNone(re.search(r"(?m)^frame\.widget-clock\s*\{", css))
 
     def test_theme_contains_shared_palette_and_focus_states(self):
         css = (ROOT / "regreet.css").read_text(encoding="utf-8")
