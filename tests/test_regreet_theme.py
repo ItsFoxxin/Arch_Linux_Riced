@@ -48,17 +48,17 @@ class ReGreetThemeTests(unittest.TestCase):
     def test_login_panel_layout_is_left_shifted_without_changing_clock(self):
         css = (ROOT / "regreet.css").read_text(encoding="utf-8")
         login = re.search(
-            r"(?m)^frame\\.background:not\\(\\.widget-clock\\)\\s*\\{([^{}]*)\\}", css
+            r"(?m)^frame\.background:not\(\.widget-clock\)\s*\{([^{}]*)\}", css
         )
         self.assertIsNotNone(login, "Login-only GTK4 selector is required")
         rules = login.group(1)
-        shift = re.search(r"\\bmargin-right:\\s*(\\d+(?:\\.\\d+)?)%;", rules)
+        shift = re.search(r"\bmargin-right:\s*(\d+(?:\.\d+)?)%;", rules)
         self.assertIsNotNone(shift, "Use a viewport-relative right margin")
         self.assertGreaterEqual(float(shift.group(1)), 20)
         self.assertLessEqual(float(shift.group(1)), 35)
-        self.assertRegex(rules, r"\\bpadding:\\s*16px\\s+14px\\s*;")
-        self.assertNotRegex(rules, r"\\bmin-width\\s*:")
-        self.assertIsNotNone(re.search(r"(?m)^frame\\.widget-clock\\s*\\{", css))
+        self.assertRegex(rules, r"\bpadding:\s*16px\s+14px\s*;")
+        self.assertNotRegex(rules, r"\bmin-width\s*:")
+        self.assertIsNotNone(re.search(r"(?m)^frame\.widget-clock\s*\{", css))
 
     def test_theme_contains_shared_palette_and_focus_states(self):
         css = (ROOT / "regreet.css").read_text(encoding="utf-8")
