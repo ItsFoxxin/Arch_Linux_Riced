@@ -1,10 +1,17 @@
 [Unit]
 Description=Proton Pass SSH Agent
+# Bound repeated owner-issued starts; authentication failure does not retry.
+StartLimitIntervalSec=5min
+StartLimitBurst=3
 
 [Service]
+# pass-cli info checks the pre-existing CLI session; never attempts login.
+# Discard account metadata and normalize any failure to a skip (status 1).
+ExecCondition=/usr/bin/sh -c 'if test -x "$HOME/.local/bin/pass-cli" && "$HOME/.local/bin/pass-cli" info >/dev/null 2>&1; then exit 0; else exit 1; fi'
 ExecStart=%h/.local/bin/pass-cli ssh-agent start --socket-path %h/.ssh/proton-pass-agent.sock
-Restart=on-failure
-RestartSec=5
+# On auth expiry or CLI failure, wait for deliberate owner intervention.
+Restart=no
+TimeoutStartSec=30
 
 [Install]
 WantedBy=default.target

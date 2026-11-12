@@ -389,7 +389,7 @@ Before using the desktop configuration, check:
 - External applications for optional capture workflows (`hyprshot`, `grim`, `slurp`, `satty`, `wf-recorder`); recordings are saved under `~/Videos/Captures` without audio by default
 - Spotify Player availability and its separate authentication requirements for the optional workspace-2 TUI
 - Login-shell behavior: `bash/.bash_profile` may run `start-hyprland` on TTY1 when the executable exists and no graphical/SSH session is detected
-- SSH-agent behavior: the Stow-managed `.bashrc` sets `SSH_AUTH_SOCK` to `~/.ssh/proton-pass-agent.sock` unconditionally, even if the separately managed Proton Pass service is not installed or running
+- SSH-agent behavior: the Stow-managed `.bashrc` selects the Proton socket only when reachable, otherwise preserves a reachable inherited agent or unsets a dead socket. See [Proton Pass acceptance and rollback](docs/PROTON_PASS_SSH_AGENT.md).
 
 Neither the [ReGreet system-login configuration](greetd/README.md) nor the `systemd/` user unit is automatically installed by these Stow commands. Review them independently; do not deploy either as part of a home-dotfile Stow operation. For lock/login issues, follow [greeter and wallpaper recovery](docs/GREETER_WALLPAPER_RECOVERY.md); avoid force-killing a locked authenticator, restarting greetd in an active session or treating ReGreet as a Stow rollback.
 

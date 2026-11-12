@@ -22,7 +22,7 @@ This repository does not install Arch, Hyprland, a display manager, fonts, codec
 | ReGreet | An existing working greetd/ReGreet + PAM login with a valid compositor/session setup | `ffmpeg`, `ffprobe`, `awk` for processing; `sudo`, `install`, `mktemp` for staging; GStreamer H.264 decoder support for video playback | `greetd/README.md`, `process-login-video.sh`, `stage-assets.sh` |
 | Terminal and shell | Kitty; Bash; Starship if you want the custom prompt | `fzf` (plus `eza` / `bat` for its previews), `zoxide`, `nvim`, `git`, `kitten ssh` (Kitty), `bash-completion`; Starship has a Bash fallback if absent | `kitty/kitty.conf`, `bash/.bashrc`, `starship/starship.toml` |
 | Music / notifications | `spotify_player` to run the TUI; `swaync` as notification daemon | Spotify account authorization and an appropriate playback device are external; `spotify_player` sets `enable_streaming = "Never"` | `spotify-player/.config/spotify-player/app.toml`, `hyprland.lua`, `swaync/config.json` |
-| Optional SSH agent | `$HOME/.local/bin/pass-cli` **only if** the separate Proton Pass SSH user unit is chosen | `~/.ssh/proton-pass-agent.sock` is exported unconditionally by the tracked `bash/.bashrc` even when no agent runs | `systemd/.config/systemd/user/proton-pass-ssh-agent.service`, `bash/.bashrc` |
+| Optional SSH agent | `$HOME/.local/bin/pass-cli` if the optional Proton Pass unit is selected; authenticated CLI session before start | Bash probes the Proton socket and preserves a reachable inherited agent instead of advertising a dead socket | `systemd/.config/systemd/user/proton-pass-ssh-agent.service`, `bash/.bashrc`, [agent guide](PROTON_PASS_SSH_AGENT.md) |
 | Static validation | Python **3.11+** (`tomllib`), `json5` Python module; GNU Stow; ShellCheck; Lua compiler `luac` | CI uses Ubuntu 24.04, Lua 5.4, `json5==0.12.1`; these are CI specifics, not an Arch runtime version guarantee | `.github/workflows/ci.yml`, `ci/validate.py`, `ci/stow_smoke.py` |
 
 This map names **executables or capabilities found in tracked files**, not a verified one-to-one list of Arch package names. Discover package names and compatibility for the target machine before installing. Do not bulk-install optional software just to satisfy unrelated controls.
@@ -52,7 +52,7 @@ A command being found does not establish its version compatibility, GPU behavior
 - The preview launcher requires exactly one connected monitor named `eDP-1`, a numbered workspace and initially disabled `misc:session_lock_xray`. Do not generalize it to multi-monitor configurations.
 - The `bash/.bash_profile` TTY1 startup block runs `start-hyprland` only when that command exists and no graphical/SSH session is detected. Back it up before Stow deployment to prevent an unexpected session-launch change.
 - `America/New_York` and `Asia/Seoul` are explicitly configured clocks. Waybar and Hyprlock use Pennsylvania-themed labels; this is a theme preference, not machine geolocation.
-- `~/.bashrc` exports `SSH_AUTH_SOCK=$HOME/.ssh/proton-pass-agent.sock` even when the optional Proton Pass agent isn't installed or running. Review this against your current SSH agent setup.
+- The managed Bash startup selects Proton Pass only when its socket is user-owned and responds to `ssh-add -l`, otherwise preserves a reachable inherited agent or unsets the dead path. A host-specific OpenSSH `IdentityAgent` can override this selection; see [the agent guide](PROTON_PASS_SSH_AGENT.md).
 
 ## Next steps
 

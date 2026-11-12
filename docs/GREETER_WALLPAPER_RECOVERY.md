@@ -90,25 +90,6 @@ For static lock failure, use the standard tracked `hyprlock.conf` with corrected
 
 ## Optional Proton Pass SSH agent user service
 
-Tracked unit: `systemd/.config/systemd/user/proton-pass-ssh-agent.service`.
+The tracked user-unit template lives in `systemd/.config/systemd/user/proton-pass-ssh-agent.service` and remains outside the seven-package Stow deployment. After Issue #11 hardening it performs a non-interactive `pass-cli info` preflight, never logs in on behalf of the user, and does not auto-restart a failing agent. Interactive Bash tests socket reachability before advertising it, with an inherited-agent fallback.
 
-The only unit in `systemd/` has:
-
-```ini
-ExecStart=%h/.local/bin/pass-cli ssh-agent start --socket-path %h/.ssh/proton-pass-agent.sock
-Restart=on-failure
-RestartSec=5
-WantedBy=default.target
-```
-
-It is a **template in the repository**, not installed or enabled by the seven-package Stow command. It assumes an independently installed Proton Pass `pass-cli` binary at `~/.local/bin/pass-cli`. This repo does **not** provision Proton Pass, authenticate it, store SSH keys, or manage service credentials.
-
-Review your existing SSH agent before choosing to install a user unit. `bash/.bashrc` **already exports** `SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"` unconditionally; that path can point to a nonexistent socket until an agent runs. Verify with **read-only** checks:
-
-```bash
-command -v pass-cli
-printf 'SSH_AUTH_SOCK=%s\n' "$SSH_AUTH_SOCK"
-systemctl --user status proton-pass-ssh-agent.service
-```
-
-A `not-found` status is expected if the optional template has not been installed. Do not enable or start it merely to make the status green. To recover another SSH-agent setup, restore the previously backed-up shell configuration/environment and use the service's actual installed state as the source of truth. No service deployment, user-unit changes or login credential changes are authorized by Issue #6.
+Follow the dedicated [Proton Pass CLI SSH-agent acceptance and rollback guide](PROTON_PASS_SSH_AGENT.md) before any owner-operated authentication, installation, user-service action or SSH test. The repo does not provision credentials, configure host-specific `IdentityAgent` entries or establish live agent recovery.
