@@ -2,9 +2,11 @@
 
 from pathlib import Path
 import shlex
+import shutil
 import socket
 import subprocess
 import tempfile
+import time
 import unittest
 
 
@@ -21,19 +23,29 @@ class ShellAgentFallbackTests(unittest.TestCase):
         (self.home / ".ssh").mkdir(mode=0o700)
         self.bin_dir = self.home / "fake-bin"
         self.bin_dir.mkdir()
+        # Match the Arch coreutils timeout interface without exposing host PATH
+        # (and unrelated optional shell integrations) to the test Bash process.
+        timeout_binary = shutil.which("timeout")
+        self.assertIsNotNone(timeout_binary, "coreutils timeout is required by the test")
+        (self.bin_dir / "timeout").symlink_to(timeout_binary)
         mock = self.bin_dir / "ssh-add"
         mock.write_text(
             '#!/bin/sh\n'
             'if [ "$SSH_AUTH_SOCK" = "$FOX_TEST_PROTON" ]; then\n'
+            '  [ "${FOX_TEST_PROTON_EXIT:-2}" = stall ] && { /bin/sleep 10; exit 0; }\n'
             '  exit "${FOX_TEST_PROTON_EXIT:-2}"\n'
             'fi\n'
             'if [ "$SSH_AUTH_SOCK" = "$FOX_TEST_OTHER" ]; then\n'
+            '  [ "${FOX_TEST_OTHER_EXIT:-2}" = stall ] && { /bin/sleep 10; exit 0; }\n'
             '  exit "${FOX_TEST_OTHER_EXIT:-2}"\n'
             'fi\n'
             'exit 2\n',
             encoding="utf-8",
         )
         mock.chmod(0o755)
+        self.no_timeout_bin = self.home / "no-timeout-bin"
+        self.no_timeout_bin.mkdir()
+        (self.no_timeout_bin / "ssh-add").symlink_to(mock)
         self.proton = self.home / ".ssh/proton-pass-agent.sock"
         self.other = self.home / ".ssh/other-agent.sock"
         self.sockets = []
@@ -49,10 +61,13 @@ class ShellAgentFallbackTests(unittest.TestCase):
         listener.listen(1)
         self.sockets.append(listener)
 
-    def _run_shell(self, *, previous=None, proton_status=2, other_status=2, provide_ssh_add=True):
+    def _run_shell(self, *, previous=None, proton_status=2, other_status=2,
+                   provide_ssh_add=True, provide_timeout=True):
         env = {
             "HOME": str(self.home),
-            "PATH": str(self.bin_dir if provide_ssh_add else self.home / "empty-bin"),
+            "PATH": str(self.bin_dir if provide_ssh_add and provide_timeout
+                        else self.no_timeout_bin if provide_ssh_add
+                        else self.home / "empty-bin"),
             "TERM": "dumb",
             "FOX_TEST_PROTON": str(self.proton),
             "FOX_TEST_OTHER": str(self.other),
@@ -65,7 +80,7 @@ class ShellAgentFallbackTests(unittest.TestCase):
         proc = subprocess.run(
             ["/bin/bash", "--noprofile", "--norc", "-ic",
              'source "$FOX_TEST_BASHRC"; printf "%s" "${SSH_AUTH_SOCK-UNSET}"'],
-            env=env, capture_output=True, text=True, check=True,
+            env=env, capture_output=True, text=True, check=True, timeout=9,
         )
         return proc.stdout
 
@@ -86,6 +101,37 @@ class ShellAgentFallbackTests(unittest.TestCase):
         self._make_socket(self.proton)
         self._make_socket(self.other)
         self.assertEqual(self._run_shell(previous=self.other, proton_status=2, other_status=1), str(self.other))
+
+    def test_stalled_proton_probe_is_bounded_and_falls_back(self):
+        self._make_socket(self.proton)
+        self._make_socket(self.other)
+        started = time.monotonic()
+        result = self._run_shell(previous=self.other, proton_status="stall", other_status=0)
+        self.assertEqual(result, str(self.other))
+        self.assertLess(time.monotonic() - started, 6.0)
+
+    def test_stalled_proton_without_alternative_unsets_socket(self):
+        self._make_socket(self.proton)
+        started = time.monotonic()
+        self.assertEqual(self._run_shell(proton_status="stall"), "UNSET")
+        self.assertLess(time.monotonic() - started, 6.0)
+
+    def test_stalled_inherited_agent_is_bounded_and_unset(self):
+        self._make_socket(self.other)
+        started = time.monotonic()
+        self.assertEqual(
+            self._run_shell(previous=self.other, other_status="stall"), "UNSET"
+        )
+        self.assertLess(time.monotonic() - started, 6.0)
+
+    def test_missing_timeout_fails_closed_even_with_agent_sockets(self):
+        self._make_socket(self.proton)
+        self._make_socket(self.other)
+        self.assertEqual(
+            self._run_shell(previous=self.other, proton_status=0, other_status=0,
+                            provide_timeout=False),
+            "UNSET",
+        )
 
     def test_missing_and_stale_sockets_do_not_advertise_agent(self):
         self.assertEqual(self._run_shell(), "UNSET")

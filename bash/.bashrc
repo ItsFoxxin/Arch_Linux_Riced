@@ -131,14 +131,18 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 
 # A socket file alone is not proof that an SSH agent is answering requests.
+# Bound each check so a stalled agent cannot hang interactive shell startup.
 # ssh-add -l returns 0 with keys, 1 with no usable identities, or 2 when it
 # cannot contact the agent. Accept empty-but-reachable agents as alive.
 _foxden_ssh_agent_is_live() {
     local socket_path=$1 status
     [[ -n "$socket_path" && -S "$socket_path" && -O "$socket_path" ]] || return 1
+    # Without coreutils timeout, fail closed rather than run an unbounded probe.
     command -v ssh-add >/dev/null 2>&1 || return 1
-    SSH_AUTH_SOCK="$socket_path" ssh-add -l >/dev/null 2>&1
+    command -v timeout >/dev/null 2>&1 || return 1
+    SSH_AUTH_SOCK="$socket_path" timeout -k 1s 2s ssh-add -l >/dev/null 2>&1
     status=$?
+    # A timeout (124/137) or helper failure must never select this socket.
     [[ $status -eq 0 || $status -eq 1 ]]
 }
 
@@ -146,7 +150,8 @@ _foxden_proton_sock="$HOME/.ssh/proton-pass-agent.sock"
 _foxden_previous_sock="${SSH_AUTH_SOCK:-}"
 if _foxden_ssh_agent_is_live "$_foxden_proton_sock"; then
     export SSH_AUTH_SOCK="$_foxden_proton_sock"
-elif _foxden_ssh_agent_is_live "$_foxden_previous_sock"; then
+elif [[ "$_foxden_previous_sock" != "$_foxden_proton_sock" ]] \
+    && _foxden_ssh_agent_is_live "$_foxden_previous_sock"; then
     export SSH_AUTH_SOCK="$_foxden_previous_sock"
 else
     unset SSH_AUTH_SOCK
