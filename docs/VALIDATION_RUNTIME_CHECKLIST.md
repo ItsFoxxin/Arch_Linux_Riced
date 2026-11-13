@@ -12,7 +12,7 @@ The existing `.github/workflows/ci.yml` runs on pushes and pull requests to `dev
 | **2 — Test** | `python3 -m unittest discover -s tests -v` (network helper and ReGreet configuration/theme assertions); `ci/stow_smoke.py` deploys/restows/deletes the seven packages into a **temporary home**, verifying links point to their sources | Collisions and permissions in the user's real `$HOME`, running services, graphics, audio, physical monitors, video decoders or actual authentication |
 | **3 — Package** | Archives the tested source packages with `git archive`, generates/checks SHA-256 and uploads a 14-day artifact | A desktop installation or publication; its tracked archive inputs currently **exclude `docs/`** |
 
-The CI runner is **Ubuntu 24.04**, not the intended Arch laptop. A green CI check is valuable for syntax and packaging but is **not a release-to-desktop approval**. Existing `tests/test_regreet_theme.py` does not spawn ReGreet; `tests/test_network_sparkline.py` mocks Linux text files and captures JSON output.
+The CI runner is **Ubuntu 24.04**, not the intended Arch laptop. A green CI check is valuable for syntax and packaging but is **not a release-to-desktop approval**. Existing `tests/test_regreet_theme.py` does not spawn ReGreet; `tests/test_network_sparkline.py` mocks Linux text files, while `tests/test_proton_pass_ssh_agent.py` simulates CLI exit statuses and socket availability without Proton credentials or real agent startup.
 
 ## Local static test commands (operator/dev environment)
 
@@ -90,7 +90,7 @@ Complete the following **on a recoverable, local Arch session**. Record the exac
 
 Provide check output/status for the PR's exact head SHA, enumerate changed files, confirm every change is under `docs/`, and identify what **was not executed**. Do not report visual checks as passing without actual owner-supplied screenshots or on-device testimony.
 
-No current automated test covers the complete live Hyprland Lua lifecycle, `eDP-1` GPU behavior, a ReGreet video playback session, an actual password unlock, or the optional Proton Pass agent. These remain **manual owner-only tests** even when CI is green.
+No current automated test covers the complete live Hyprland Lua lifecycle, `eDP-1` GPU behavior, a ReGreet video playback session, an actual password unlock, or an **authenticated live** Proton Pass SSH agent. Mocked source checks for the optional agent are automated, but runtime authentication and SSH acceptance remain **manual owner-only tests** even when CI is green. See [agent acceptance and rollback](PROTON_PASS_SSH_AGENT.md).
 
 ## Recovery links
 

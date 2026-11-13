@@ -109,7 +109,7 @@ If a Stow command fails midway, stop and inspect the exact error and link state 
 | Hyprland starts but desktop modules fail | Keep the session active; inspect the target binaries, `hyprland.lua`, autostart, Waybar/Rofi paths, and local media. Do not assume CI validated your compositor version. |
 | Missing or unreadable lock background | Review both absolute PNG paths in `hyprlock.conf`; use the normal static config, not the animated preview, as the intended default. |
 | ReGreet failure | **Not a Stow rollback.** Use a TTY and restore previous `/etc/greetd` files as in [greeter recovery](GREETER_WALLPAPER_RECOVERY.md). |
-| Proton Pass agent not running | Do not enable the user unit automatically. Review the optional unit and unconditional `SSH_AUTH_SOCK` export in `.bashrc`; restore your previous agent environment if required. |
+| Proton Pass agent not running | Do not enable the user unit automatically. Managed Bash verifies socket reachability and preserves another live inherited agent; review the [agent acceptance and rollback guide](PROTON_PASS_SSH_AGENT.md) for manual recovery. |
 
 ## Source and scope
 

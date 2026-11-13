@@ -10,6 +10,7 @@ These documents describe **tracked configuration on `dev`**, with an explicit di
 | [Greeter, wallpaper and optional service recovery](GREETER_WALLPAPER_RECOVERY.md) | Static Hyprlock, local-only media; ReGreet processing/demo/fallback/TTY recovery; optional Proton Pass SSH agent |
 | [Animated Hyprlock preview](ANIMATED_HYPRLOCK_PREVIEW.md) | Current `dev` preview, no obsolete feature branch; single-monitor/xray safety; cleanup |
 | [CI vs live runtime verification](VALIDATION_RUNTIME_CHECKLIST.md) | Existing CI capabilities, local static commands and owner-only acceptance checklist |
+| [Proton Pass SSH-agent acceptance and rollback](PROTON_PASS_SSH_AGENT.md) | Non-interactive auth preflight; bounded service failure; Bash socket fallback; owner-only login, runtime verification and rollback |
 
 **Documentation roles:** The root `README.md` is the project overview and entry point. The focused `docs/` guides provide source-verified installation prerequisites, component details, maintenance procedures, manual verification and recovery. The `greetd/` tree is a separately managed system-level theme and media workflow; `systemd/` contains a separately managed optional user unit. Neither is installed by the seven-package home Stow command.
 
